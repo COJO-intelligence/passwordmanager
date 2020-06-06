@@ -1,1 +1,1 @@
-Facem parole, no?
+## PROIECT SMECHER DE STOCAT PAROLE 
