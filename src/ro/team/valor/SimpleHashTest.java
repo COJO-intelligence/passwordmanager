@@ -24,7 +24,7 @@ public class SimpleHashTest {
     public static void main(String[] args) {
         System.out.println("--------------------START--------------------");
         try {
-            File inputFile = new File("src/ro/team/valor/testFile.txt");
+            File inputFile = new File("src/testFile.txt");
             FileInputStream fis = new FileInputStream(inputFile);
             byte[] inputBytes = fis.readAllBytes();
             System.out.println("The hashes of the file are:");
