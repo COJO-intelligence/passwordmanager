@@ -20,7 +20,7 @@ public class SimpleHashTest {
         byte[] outputBytes = md.digest(inputBytes);
         printHex(outputBytes, algorithm);
     }
-
+//test
     public static void main(String[] args) {
         System.out.println("--------------------START--------------------");
         try {
