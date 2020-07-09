@@ -20,7 +20,8 @@ public class Login {
 		super();
 		this.password = password;
 	}
-	
+
+	//am bagat asta
 	public boolean validateUserPassword() throws NoSuchAlgorithmException, IOException
 	{
 		
@@ -33,8 +34,7 @@ public class Login {
 	public boolean setUserPassword() throws NoSuchAlgorithmException, IOException
 	{
 		//TODO just for testing now
-		if (loginFile.exists())
-			loginFile.delete();
+		if (loginFile.exists()) loginFile.delete();
 		
 		FileOutputStream fos = new FileOutputStream(loginFile);
 		fos.write(calculatePasswordHash());
