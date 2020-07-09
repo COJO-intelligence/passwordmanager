@@ -10,7 +10,8 @@ public class Main {
 		// TODO Auto-generated method stub
 		boolean setPasswordOkay;
 		boolean matchPasswordOkay;
-		
+
+//		sunt jmek3r
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Set your password: ");
 		String initPassword = scanner.next();
