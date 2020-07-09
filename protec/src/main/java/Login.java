@@ -21,7 +21,7 @@ public class Login {
 		this.password = password;
 	}
 
-	//am bagat asta
+	//am bagat astaadas
 	public boolean validateUserPassword() throws NoSuchAlgorithmException, IOException
 	{
 		
