@@ -16,7 +16,7 @@ public class Main extends StoreData{
 
         String[] tests = getElementInfo(inputPath, "1");
         for(String test:tests) {
-            System.out.println(test + ", ");
+            System.out.print(test + ", ");
         }
         System.out.println("\n");
     }
