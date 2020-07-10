@@ -19,7 +19,5 @@ public class Main extends StoreData{
             System.out.println(test + ", ");
         }
         System.out.println("\n");
-
-
     }
 }
