@@ -91,10 +91,16 @@ public class StoreData {
         while ((row = csvReader.readLine()) != null) {
             String[] data = row.split(",");
             if(data[0].equals(arguments[0])) {
-
+                setNewElementInfo(arguments, outputFilePath);
             }
         }
         csvReader.close();
     }
-     */
+
+    public void deleteExistingElement(String elementID, String outputFilePath) {
+        //TODO
+    }
+    */
+
+
 }
