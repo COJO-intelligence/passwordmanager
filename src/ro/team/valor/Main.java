@@ -18,6 +18,18 @@ public class Main extends StoreData{
         for(String test:tests) {
             System.out.print(test + ", ");
         }
-        System.out.println("\n");
+        System.out.print("\n");
+
+        tests = getElementInfo(inputPath, "0");
+        for(String test:tests) {
+            System.out.print(test + ", ");
+        }
+        System.out.print("\n");
+
+        tests = getElementInfo(inputPath, "50");
+        for(String test:tests) {
+            System.out.print(test + ", ");
+        }
+        System.out.print("\n");
     }
 }
