@@ -6,18 +6,21 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException {
 		// TODO Auto-generated method stub
 		boolean setPasswordOkay;
 		boolean matchPasswordOkay;
 
-//		sunt jmek3r
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Set your password: ");
 		String initPassword = scanner.next();
 		
 		Login login = new Login(initPassword);
 		try {
+			if (login.isPasswordSet())
+			{
+				login.resetPassword();
+			}
 			setPasswordOkay = login.setUserPassword();
 			if (setPasswordOkay)
 			{
@@ -27,6 +30,11 @@ public class Main {
 		} catch (NoSuchAlgorithmException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			}
+		catch (PasswordExistsException e) {
+			e.printStackTrace();
+			System.out.println("PASSWORD IS ALREADY SET");
+			System.exit(2);
 		}
 		
 		
