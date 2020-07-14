@@ -39,7 +39,7 @@ public class Main {
         dataList.writeDataListToFile(filePath);
         printList(dataList,"Adding One Element + Printing to File");
 
-        dataList.getDataList().set(1, element5);
+        dataList.getDataList().add(1, element5);
         printList(dataList,"Adding One Element to Position");
 
         dataList.getDataList().remove(2);
