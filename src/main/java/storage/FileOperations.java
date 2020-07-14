@@ -45,7 +45,7 @@ public class FileOperations {
         csvWriter.close();
     }
 
-    public void encryptFile(String outputFilePath) {
+    public void encryptFile(String inputFilePath, String outputFilePath) {
 
     }
 
