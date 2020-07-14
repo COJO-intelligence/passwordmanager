@@ -1,11 +1,8 @@
 package main.java.storage;
 
-
-import zxyrandom.FileOperationsPL;
-
 import java.util.ArrayList;
 
-public class Main extends FileOperationsPL {
+public class Main {
 
     private static void printList(DataOperations dataList, String testingMethod) {
         System.out.println();
