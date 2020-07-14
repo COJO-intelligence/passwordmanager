@@ -1,4 +1,4 @@
-package ro.team.valor;
+package zxyrandom;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ public class SimpleHashTest {
     public static void main(String[] args) {
         System.out.println("--------------------START--------------------");
         try {
-            File inputFile = new File("src/testFile.txt");
+            File inputFile = new File("src/random/testFile.txt");
             FileInputStream fis = new FileInputStream(inputFile);
             byte[] inputBytes = fis.readAllBytes();
             System.out.println("The hashes of the file are:");

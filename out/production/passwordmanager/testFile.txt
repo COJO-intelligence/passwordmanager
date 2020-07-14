@@ -1,1 +1,0 @@
-This is a simple test file just to make sure about some git related stuff. Hi from my PC!
