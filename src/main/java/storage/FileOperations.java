@@ -1,6 +1,12 @@
 package main.java.storage;
 
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class FileOperations {
@@ -45,12 +51,76 @@ public class FileOperations {
         csvWriter.close();
     }
 
-    public void encryptFile(String inputFilePath, String outputFilePath) {
+    public static void encryptFile(String inputFilePath, String outputFilePath, byte[] key, byte[] initialIV)
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException {
+        File inputFile = new File(inputFilePath);
+        File outputFile = new File (outputFilePath);
+        FileInputStream fis = new FileInputStream(inputFile);
+        FileOutputStream fos = new FileOutputStream(outputFile);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKey secretKey = new SecretKeySpec(key, "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+        byte[] buffer = new byte[cipher.getBlockSize()];
+        byte[] encBlock = null;
+        int noBytes;
+        while ((noBytes = fis.read(buffer)) != -1) {
+            encBlock = new byte[cipher.getOutputSize(noBytes)];
+            int noEncBytes = cipher.update(buffer, 0, noBytes, encBlock);
+            fos.write(encBlock, 0, noEncBytes);
+        }
+        assert encBlock != null;
+        int noLastBytes = cipher.doFinal(encBlock, 0);
+        fos.write(encBlock, 0, noLastBytes);
+        fos.close();
 
+        fos = new FileOutputStream(inputFile);
+        while(fis.read() != -1) {
+            fos.write(0x01);
+        }
+        fis.close();
+        fos.close();
+        boolean isRemoved = false;
+        while(!isRemoved) {
+            isRemoved = inputFile.delete();
+        }
+        //inputFile.deleteOnExit();
     }
 
-    public void decryptFile(String inputFilePath) {
+    public static void decryptFile(String inputFilePath, String outputFilePath, byte[] key, byte[] initialIV)
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException {
+        File inputFile = new File(inputFilePath);
+        File outputFile = new File (outputFilePath);
+        FileInputStream fis = new FileInputStream(inputFile);
+        FileOutputStream fos = new FileOutputStream(outputFile);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKey secretKey = new SecretKeySpec(key, "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+        byte[] buffer = new byte[cipher.getBlockSize()];
+        byte[] encBlock = null;
+        int noBytes;
+        while ((noBytes = fis.read(buffer)) != -1) {
+            encBlock = new byte[cipher.getOutputSize(noBytes)];
+            int noEncBytes = cipher.update(buffer, 0, noBytes, encBlock);
+            fos.write(encBlock, 0, noEncBytes);
+        }
+        assert encBlock != null;
+        int noLastBytes = cipher.doFinal(encBlock, 0);
+        fos.write(encBlock, 0, noLastBytes);
+        fos.close();
 
+        fos = new FileOutputStream(inputFile);
+        while(fis.read() != -1) {
+            fos.write(0x01);
+        }
+        fis.close();
+        fos.close();
+        boolean isRemoved = false;
+        while(!isRemoved) {
+            isRemoved = inputFile.delete();
+        }
+        //inputFile.deleteOnExit();
     }
 
 }

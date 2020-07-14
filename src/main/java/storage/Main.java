@@ -81,6 +81,27 @@ public class Main extends FileOperationsPL {
 
         dataList.initializeDataListFromFile(filePath);
         printList(dataList, "File Content");
+
+
+
+        byte[] key = {
+                0x2A, 0x4D, 0x61, 0x73,
+                0x74, 0x65, 0x72, 0x20,
+                0x49, 0x53, 0x4D, 0x20,
+                0x32, 0x30, 0x31, 0x37
+        };
+        byte[] initialIV = new byte[key.length];
+        for(int i = 0; i < key.length; i++){
+            initialIV[i] = 1;
+        }
+        String inputFile = "test.csv";
+        String intermediateFile = "test.encrypt";
+        String outputFile = "test.csv";
+
+        System.out.println("Vezi ca bag criptarea!");
+        FileOperations.encryptFile(inputFile, intermediateFile, key, initialIV);
+        System.out.println("Vezi ca bag decriptarea!");
+        FileOperations.decryptFile(intermediateFile, outputFile, key, initialIV);
     }
 
 }
