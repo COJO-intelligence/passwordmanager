@@ -7,120 +7,84 @@ import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 public class FileOperations {
 
-    public static void createFile(String outputFilePath) throws Exception {
-        FileWriter csvWrite = new FileWriter(outputFilePath);
-        csvWrite.flush();
-        csvWrite.close();
+    private static final byte[] key = {
+            0x2A, 0x4D, 0x61, 0x73,
+            0x74, 0x65, 0x72, 0x20,
+            0x49, 0x53, 0x4D, 0x20,
+            0x32, 0x30, 0x31, 0x37
+    };
+
+    private static final byte[] initialIV = {
+            0x01, 0x01, 0x01, 0x01,
+            0x01, 0x01, 0x01, 0x01,
+            0x01, 0x01, 0x01, 0x01,
+            0x01, 0x01, 0x01, 0x01
+    };
+
+    public static void createFile(String outputFilePath) {
+        File outputFile = new File(outputFilePath);
+
+        //TODO
     }
 
-    public static ArrayList<CredentialsElement> loadAllElementsIntoList(String inputFilePath) throws IOException {
-        BufferedReader csvReader = new BufferedReader(new FileReader(inputFilePath));
-        ArrayList<CredentialsElement> dataList = new ArrayList<>();
-        String row;
-        while ((row = csvReader.readLine()) != null) {
-            String[] intermediateData = row.split(",");
-            int elementID = Integer.parseInt(intermediateData[0]);
-            CredentialsElement credentialsElement = new CredentialsElement(elementID, intermediateData[1], intermediateData[2], intermediateData[3], intermediateData[4], intermediateData[5]);
-            dataList.add(credentialsElement);
+    public static void destroyFile(String inputFilePath) throws IOException {
+        File inputFile = new File (inputFilePath);
+        FileInputStream fis = new FileInputStream(inputFile);
+        FileOutputStream fos = new FileOutputStream(inputFile);
+        while(fis.read() != -1) {
+            fos.write(0x01);
         }
-        csvReader.close();
+        fis.close();
+        fos.close();
+        boolean isRemoved = false;
+        while (!isRemoved) {
+            isRemoved = inputFile.delete();
+        }
+    }
+
+    public static DataOperations loadAllElementsIntoArrayList(String inputFilePath)
+            throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptFile(inputFilePath)));
+        DataOperations dataList = (DataOperations) objectInputStream.readObject();
+        objectInputStream.close();
         return dataList;
     }
 
-    public static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList,String outputFilePath) throws IOException {
-        FileWriter csvWriter = new FileWriter(outputFilePath);
-        for(CredentialsElement data : dataList) {
-            csvWriter.write(Integer.toString(data.getElementID()));
-            csvWriter.write(",");
-            csvWriter.write(data.getDomain());
-            csvWriter.write(",");
-            csvWriter.write(data.getUsername());
-            csvWriter.write(",");
-            csvWriter.write(data.getEmail());
-            csvWriter.write(",");
-            csvWriter.write(data.getPassword());
-            csvWriter.write(",");
-            csvWriter.write(data.getAdditionalComments());
-            csvWriter.write("\n");
-        }
-        csvWriter.flush();
-        csvWriter.close();
+    public static void writeAllElementsIntoFile(DataOperations dataList, String outputFilePath)
+            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(dataList);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        encryptFile(outputFilePath, byteArrayOutputStream.toByteArray());
     }
 
-    public static void encryptFile(String inputFilePath, String outputFilePath, byte[] key, byte[] initialIV)
-            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException {
-        File inputFile = new File(inputFilePath);
-        File outputFile = new File (outputFilePath);
-        FileInputStream fis = new FileInputStream(inputFile);
-        FileOutputStream fos = new FileOutputStream(outputFile);
+    private static void encryptFile(String outputFilePath, byte[] inputByteArray)
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        FileOutputStream fos = new FileOutputStream(outputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey secretKey = new SecretKeySpec(key, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-        byte[] buffer = new byte[cipher.getBlockSize()];
-        byte[] encBlock = null;
-        int noBytes;
-        while ((noBytes = fis.read(buffer)) != -1) {
-            encBlock = new byte[cipher.getOutputSize(noBytes)];
-            int noEncBytes = cipher.update(buffer, 0, noBytes, encBlock);
-            fos.write(encBlock, 0, noEncBytes);
-        }
-        assert encBlock != null;
-        int noLastBytes = cipher.doFinal(encBlock, 0);
-        fos.write(encBlock, 0, noLastBytes);
+        fos.write(cipher.doFinal(inputByteArray));
         fos.close();
-
-        fos = new FileOutputStream(inputFile);
-        while(fis.read() != -1) {
-            fos.write(0x01);
-        }
-        fis.close();
-        fos.close();
-        boolean isRemoved = false;
-        while(!isRemoved) {
-            isRemoved = inputFile.delete();
-        }
-        //inputFile.deleteOnExit();
     }
 
-    public static void decryptFile(String inputFilePath, String outputFilePath, byte[] key, byte[] initialIV)
-            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException {
-        File inputFile = new File(inputFilePath);
-        File outputFile = new File (outputFilePath);
-        FileInputStream fis = new FileInputStream(inputFile);
-        FileOutputStream fos = new FileOutputStream(outputFile);
+    private static byte[] decryptFile(String inputFilePath)
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        FileInputStream fis = new FileInputStream(inputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey secretKey = new SecretKeySpec(key, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-        byte[] buffer = new byte[cipher.getBlockSize()];
-        byte[] encBlock = null;
-        int noBytes;
-        while ((noBytes = fis.read(buffer)) != -1) {
-            encBlock = new byte[cipher.getOutputSize(noBytes)];
-            int noEncBytes = cipher.update(buffer, 0, noBytes, encBlock);
-            fos.write(encBlock, 0, noEncBytes);
-        }
-        assert encBlock != null;
-        int noLastBytes = cipher.doFinal(encBlock, 0);
-        fos.write(encBlock, 0, noLastBytes);
-        fos.close();
-
-        fos = new FileOutputStream(inputFile);
-        while(fis.read() != -1) {
-            fos.write(0x01);
-        }
+        byte[] decryptedContent = fis.readAllBytes();
+        decryptedContent = cipher.doFinal(decryptedContent);
         fis.close();
-        fos.close();
-        boolean isRemoved = false;
-        while(!isRemoved) {
-            isRemoved = inputFile.delete();
-        }
-        //inputFile.deleteOnExit();
+        return decryptedContent;
     }
 
 }
