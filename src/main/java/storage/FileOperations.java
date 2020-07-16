@@ -47,34 +47,13 @@ public class FileOperations {
 
     public static DataOperations loadAllElementsIntoArrayList(String inputFilePath)
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
-        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptFile(inputFilePath)));
+        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));
         DataOperations dataList = (DataOperations) objectInputStream.readObject();
         objectInputStream.close();
         return dataList;
     }
 
-    public static void writeAllElementsIntoFile(DataOperations dataList, String outputFilePath)
-            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(dataList);
-        objectOutputStream.flush();
-        objectOutputStream.close();
-        encryptFile(outputFilePath, byteArrayOutputStream.toByteArray());
-    }
-
-    private static void encryptFile(String outputFilePath, byte[] inputByteArray)
-            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        FileOutputStream fos = new FileOutputStream(outputFilePath);
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        SecretKey secretKey = new SecretKeySpec(key, "AES");
-        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-        fos.write(cipher.doFinal(inputByteArray));
-        fos.close();
-    }
-
-    private static byte[] decryptFile(String inputFilePath)
+    private static byte[] decryptContent(String inputFilePath)
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         FileInputStream fis = new FileInputStream(inputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -85,6 +64,27 @@ public class FileOperations {
         decryptedContent = cipher.doFinal(decryptedContent);
         fis.close();
         return decryptedContent;
+    }
+
+    public static void writeAllElementsIntoFile(DataOperations dataList, String outputFilePath)
+            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(dataList);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        encryptContent(outputFilePath, byteArrayOutputStream.toByteArray());
+    }
+
+    private static void encryptContent(String outputFilePath, byte[] inputByteArray)
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        FileOutputStream fos = new FileOutputStream(outputFilePath);
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        SecretKey secretKey = new SecretKeySpec(key, "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+        fos.write(cipher.doFinal(inputByteArray));
+        fos.close();
     }
 
 }
