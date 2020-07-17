@@ -1,8 +1,10 @@
 package main.java.storage;
 
-public class CredentialsElement {
+import java.io.Serializable;
+
+public class CredentialsElement implements Serializable {
+
     private int elementID;
-    //private static int elementIDCounter = 0;
     private String domain;
     private String username;
     private String email;
@@ -11,8 +13,6 @@ public class CredentialsElement {
 
     CredentialsElement(int elementID, String domain, String username, String email, String password, String additionalComments) {
         this.elementID = elementID;
-        //elementIDCounter++;
-        //this.elementID = ++elementIDCounter;
         this.domain = domain;
         this.username = username;
         this.email = email;
@@ -28,19 +28,7 @@ public class CredentialsElement {
         this.elementID = elementID;
     }
 
-    /*
-    public int getElementIDCounter() {
-        return elementIDCounter;
-    }
-
-    public void resetElementIDCounter() {
-        elementIDCounter = 0;
-    }
-     */
-
-    public String getDomain() {
-        return domain;
-    }
+    public String getDomain() { return domain; }
 
     public void setDomain(String domain) {
         this.domain = domain;

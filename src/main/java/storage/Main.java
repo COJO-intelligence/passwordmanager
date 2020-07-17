@@ -1,5 +1,7 @@
 package main.java.storage;
 
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 public class Main {
@@ -16,8 +18,13 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        String filePath = "test.csv";
-        FileOperations.createFile(filePath);
+        String filePath = "test.encrypt";
+        try {
+            FileOperations.createFile(filePath);
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("File already exists!");
+        }
+
 
 
         CredentialsElement element1 = new CredentialsElement(1,"1.com", "1", "1@1.com", "111", "1comment");
@@ -33,23 +40,20 @@ public class Main {
 
         DataOperations dataList = new DataOperations();
         dataList.setDataList(testList);
-        printList(dataList,"Simple Print");
+        printList(dataList,"Data List Set");
 
         dataList.getDataList().add(element4);
-        dataList.writeDataListToFile(filePath);
+        FileOperations.writeAllElementsIntoFile(dataList, filePath);
         printList(dataList,"Adding One Element + Printing to File");
 
         dataList.getDataList().add(1, element5);
         printList(dataList,"Adding One Element to Position");
 
         dataList.getDataList().remove(2);
-        dataList.writeDataListToFile(filePath);
+        FileOperations.writeAllElementsIntoFile(dataList, filePath);
         printList(dataList,"Removing One Element + Printing to File");
 
-        dataList.getDataList().clear();
-        printList(dataList,"Clear Content");
-
-        dataList.initializeDataListFromFile(filePath);
+        dataList = FileOperations.loadAllElementsIntoArrayList(filePath);
         printList(dataList, "File Content");
 
         dataList.getDataList().get(1).setElementID(10);
@@ -70,35 +74,20 @@ public class Main {
         dataList.getDataList().get(1).setAdditionalComments("New AdditionalComments");
         printList(dataList, "New AdditionalComments");
 
-        dataList.writeDataListToFile(filePath);
+        FileOperations.writeAllElementsIntoFile(dataList, filePath);
         printList(dataList,"Printing to File");
 
         dataList.getDataList().clear();
         printList(dataList,"Clear Content");
 
-        dataList.initializeDataListFromFile(filePath);
+        dataList = FileOperations.loadAllElementsIntoArrayList(filePath);
         printList(dataList, "File Content");
 
+        FileOperations.destroyFile(filePath);
+        System.out.println("File Destroyed");
 
-
-        byte[] key = {
-                0x2A, 0x4D, 0x61, 0x73,
-                0x74, 0x65, 0x72, 0x20,
-                0x49, 0x53, 0x4D, 0x20,
-                0x32, 0x30, 0x31, 0x37
-        };
-        byte[] initialIV = new byte[key.length];
-        for(int i = 0; i < key.length; i++){
-            initialIV[i] = 1;
-        }
-        String inputFile = "test.csv";
-        String intermediateFile = "test.encrypt";
-        String outputFile = "test.csv";
-
-        System.out.println("Vezi ca bag criptarea!");
-        FileOperations.encryptFile(inputFile, intermediateFile, key, initialIV);
-        System.out.println("Vezi ca bag decriptarea!");
-        FileOperations.decryptFile(intermediateFile, outputFile, key, initialIV);
+        FileOperations.writeAllElementsIntoFile(dataList, filePath);
+        printList(dataList,"Printing to File");
     }
 
 }
