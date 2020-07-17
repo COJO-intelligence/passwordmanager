@@ -1,5 +1,7 @@
 package main.java.storage;
 
+import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 
 public class Main {
@@ -17,7 +19,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         String filePath = "test.encrypt";
-        FileOperations.createFile(filePath);
+        try {
+            FileOperations.createFile(filePath);
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("File already exists!");
+        }
+
 
 
         CredentialsElement element1 = new CredentialsElement(1,"1.com", "1", "1@1.com", "111", "1comment");
@@ -78,9 +85,6 @@ public class Main {
 
         FileOperations.destroyFile(filePath);
         System.out.println("File Destroyed");
-
-        FileOperations.createFile(filePath);
-        System.out.println("Recreating File");
 
         FileOperations.writeAllElementsIntoFile(dataList, filePath);
         printList(dataList,"Printing to File");

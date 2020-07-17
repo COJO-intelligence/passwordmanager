@@ -28,7 +28,6 @@ public class CredentialsElement implements Serializable {
         this.elementID = elementID;
     }
 
-
     public String getDomain() { return domain; }
 
     public void setDomain(String domain) {

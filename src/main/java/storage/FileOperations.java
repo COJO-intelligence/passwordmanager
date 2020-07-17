@@ -4,6 +4,7 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -24,10 +25,11 @@ public class FileOperations {
             0x01, 0x01, 0x01, 0x01
     };
 
-    public static void createFile(String outputFilePath) {
+    public static void createFile(String outputFilePath) throws IOException {
         File outputFile = new File(outputFilePath);
-
-        //TODO
+        if(!outputFile.createNewFile()) {
+            throw new FileAlreadyExistsException(outputFilePath);
+        }
     }
 
     public static void destroyFile(String inputFilePath) throws IOException {
@@ -60,8 +62,8 @@ public class FileOperations {
         SecretKey secretKey = new SecretKeySpec(key, "AES");
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-        byte[] decryptedContent = fis.readAllBytes();
-        decryptedContent = cipher.doFinal(decryptedContent);
+        byte[] encryptedContent = fis.readAllBytes();
+        byte[] decryptedContent = cipher.doFinal(encryptedContent);
         fis.close();
         return decryptedContent;
     }
