@@ -1,7 +1,7 @@
-package main.tests;
+package test.java.login;
 
-import main.java.Login;
-import main.java.PasswordExistsException;
+import main.java.login.Login;
+import main.java.login.PasswordExistsException;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
