@@ -1,4 +1,4 @@
-package main.java;
+package main.java.login;
 
 public class PasswordExistsException extends Exception{
     public PasswordExistsException(String message) {
