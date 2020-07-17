@@ -1,4 +1,4 @@
-package main.java;
+package main.java.login;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
