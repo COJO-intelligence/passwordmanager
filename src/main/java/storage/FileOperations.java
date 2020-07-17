@@ -40,6 +40,7 @@ public class FileOperations {
             fos.write(0x01);
         }
         fis.close();
+        fos.flush();
         fos.close();
         boolean isRemoved = false;
         while (!isRemoved) {
@@ -86,6 +87,7 @@ public class FileOperations {
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
         fos.write(cipher.doFinal(inputByteArray));
+        fos.flush();
         fos.close();
     }
 

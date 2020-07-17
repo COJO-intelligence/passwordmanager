@@ -1,4 +1,4 @@
-package test.java;
+package test.java.storage;
 
 class FileOperationsTest {
 
