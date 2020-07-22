@@ -21,6 +21,10 @@ public class Login {
 		this.password = password;
 		messageDigest = MessageDigest.getInstance(DIGEST_ALGORITHM);
 	}
+	public Login() throws NoSuchAlgorithmException {
+		super();
+		messageDigest = MessageDigest.getInstance(DIGEST_ALGORITHM);
+	}
 
 	/**
 	 * Validates the user input password to be the same as original
@@ -106,4 +110,7 @@ public class Login {
 		return masterPass.length == messageDigest.getDigestLength();
 	}
 
+//	public void setPassword(String password) {
+//		this.password = password;
+//	}
 }
