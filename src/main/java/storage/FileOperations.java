@@ -1,13 +1,14 @@
 package main.java.storage;
 
+import main.java.manager.KeyManager;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.security.cert.CertificateException;
 
 public class FileOperations {
 
@@ -49,7 +50,7 @@ public class FileOperations {
     }
 
     public static DataOperations loadAllElementsIntoArrayList(String inputFilePath)
-            throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+            throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));
         DataOperations dataList = (DataOperations) objectInputStream.readObject();
         objectInputStream.close();
@@ -57,10 +58,14 @@ public class FileOperations {
     }
 
     private static byte[] decryptContent(String inputFilePath)
-            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         FileInputStream fis = new FileInputStream(inputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        SecretKey secretKey = new SecretKeySpec(key, "AES");
+
+        //am adaugat aici modul nou de utilizare a cheii
+        SecretKey secretKey = KeyManager.getSecretKey();
+
+
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
         byte[] encryptedContent = fis.readAllBytes();
@@ -70,7 +75,7 @@ public class FileOperations {
     }
 
     public static void writeAllElementsIntoFile(DataOperations dataList, String outputFilePath)
-            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException {
+            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
         objectOutputStream.writeObject(dataList);
@@ -80,10 +85,18 @@ public class FileOperations {
     }
 
     private static void encryptContent(String outputFilePath, byte[] inputByteArray)
-            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+            throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         FileOutputStream fos = new FileOutputStream(outputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        SecretKey secretKey = new SecretKeySpec(key, "AES");
+
+        //am adaugat aici modul nou de utilizare a cheii
+        if (!KeyManager.isSecretKeySet()) {
+            KeyManager.setSecretKey();
+            System.out.println("Nu are cheie!");
+        }
+
+        SecretKey secretKey = KeyManager.getSecretKey();
+
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
         fos.write(cipher.doFinal(inputByteArray));
