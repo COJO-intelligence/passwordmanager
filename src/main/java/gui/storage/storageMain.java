@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 public class storageMain extends JFrame {
     private JButton addNewButton;
@@ -24,11 +26,16 @@ public class storageMain extends JFrame {
     private JPanel titlePanel;
     private JPanel elementPanel2;
 
-    private DataOperations dataOperations;
+    private DataOperations dataOperations = new DataOperations();
     DefaultListModel<String> defaultListModel = new DefaultListModel<>();
 
-    storageMain(String filePath) {
-        loadListPanel(filePath);
+    public storageMain(String filePath) {
+        File file = new File(filePath);
+        if(!file.exists()) {
+            firstAppBoot(filePath);
+        } else {
+            loadListPanel(filePath);
+        }
         list.setModel(defaultListModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         saveButton.addActionListener(new ActionListener() {
@@ -47,7 +54,7 @@ public class storageMain extends JFrame {
         addNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                onAddNew();
             }
         });
 
@@ -61,8 +68,21 @@ public class storageMain extends JFrame {
         });
     }
 
+    public void firstAppBoot(String filePath) {
+        CredentialsElement firstElement = new CredentialsElement("Welcome!", "", "", "", "");
+        ArrayList<CredentialsElement> testList = new ArrayList<>();
+        testList.add(firstElement);
+        dataOperations.setDataList(testList);
+        try {
+            FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        defaultListModel.addElement(dataOperations.getDataList().get(0).getDomain());
+    }
+
     public void loadListPanel(String filePath) {
-        dataOperations = new DataOperations();
+        //dataOperations = new DataOperations();
         try {
             dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
         } catch(Exception e) {
@@ -88,6 +108,7 @@ public class storageMain extends JFrame {
         passwordTextField.setText(dataOperations.getDataList().get(listIndex).getPassword());
         additionalCommentsTextField.setText(dataOperations.getDataList().get(listIndex).getAdditionalComments());
     }
+
     private void onSave(int listIndex, String domain, String username, String email, String password, String additionalComments, String filePath) {
         dataOperations.getDataList().get(listIndex).setDomain(domain);
         dataOperations.getDataList().get(listIndex).setUsername(username);
@@ -95,6 +116,12 @@ public class storageMain extends JFrame {
         dataOperations.getDataList().get(listIndex).setPassword(password);
         dataOperations.getDataList().get(listIndex).setAdditionalComments(additionalComments);
         writeListPanel(filePath);
+    }
+
+    private void onAddNew() {
+        CredentialsElement credentialsElement = new CredentialsElement();
+        dataOperations.addNewElement(credentialsElement);
+        defaultListModel.addElement(credentialsElement.getDomain());
     }
 
     public static void main(String[] args) {

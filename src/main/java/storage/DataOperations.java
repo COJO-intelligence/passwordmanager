@@ -15,4 +15,8 @@ public class DataOperations implements Serializable {
         this.dataList = dataList;
     }
 
+    public void addNewElement(CredentialsElement credentialsElement) {
+        dataList.add(credentialsElement);
+    }
+
 }

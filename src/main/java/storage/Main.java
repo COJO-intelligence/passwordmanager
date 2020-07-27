@@ -1,5 +1,7 @@
 package main.java.storage;
 
+import main.java.manager.KeyManager;
+
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
@@ -19,6 +21,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
+        /*
+
+        KeyManager keymanager = new KeyManager();
+        keymanager.setSecretKey();
+
         String filePath = "test.encrypt";
         try {
             FileOperations.createFile(filePath);
@@ -91,6 +98,8 @@ public class Main {
 
         FileOperations.writeAllElementsIntoFile(dataList, filePath);
         printList(dataList,"Printing to File");
+
+         */
     }
 
 }

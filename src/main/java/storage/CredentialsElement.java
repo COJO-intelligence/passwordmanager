@@ -5,19 +5,31 @@ import java.io.Serializable;
 public class CredentialsElement implements Serializable {
 
     private int elementID;
+    private static int elementCounter = 0;
     private String domain;
     private String username;
     private String email;
     private String password;
     private String additionalComments;
 
-    CredentialsElement(int elementID, String domain, String username, String email, String password, String additionalComments) {
-        this.elementID = elementID;
+    public CredentialsElement(String domain, String username, String email, String password, String additionalComments) {
+        elementCounter++;
+        this.elementID = elementCounter;
         this.domain = domain;
         this.username = username;
         this.email = email;
         this.password = password;
         this.additionalComments = additionalComments;
+    }
+
+    public CredentialsElement() {
+        elementCounter++;
+        this.elementID = elementCounter;
+        this.domain = "Password Manager";
+        this.username = null;
+        this.email = null;
+        this.password = null;
+        this.additionalComments = null;
     }
 
     public int getElementID() {
