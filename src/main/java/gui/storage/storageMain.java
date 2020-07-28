@@ -79,7 +79,7 @@ public class storageMain extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 saveButton.setEnabled(true);
                 deleteButton.setEnabled(true);
-                if(!e.getValueIsAdjusting() && !deleteItem) {
+                if(!e.getValueIsAdjusting() && !deleteItem && list.getSelectedIndex() >= 0) {
                     setFields(list.getSelectedIndex());
                 }
             }
@@ -160,6 +160,10 @@ public class storageMain extends JFrame {
             list.clearSelection();
             writeListPanel(filePath);
         }
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 
     public static void main(String[] args) {

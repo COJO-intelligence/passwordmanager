@@ -1,5 +1,6 @@
 package main.java.gui.login;
 
+import main.java.gui.storage.storageMain;
 import main.java.login.Login;
 import main.java.login.PasswordExistsException;
 
@@ -51,8 +52,8 @@ public class SetPassUI {
     {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(passPanel);
         topFrame.dispose();
-        JFrame frame = new JFrame("GotoUI");
-        frame.setContentPane(new GotoUI().getGotoPanel());
+        JFrame frame = new JFrame("Storage");
+        frame.setContentPane(new storageMain("test.encrypt").getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
