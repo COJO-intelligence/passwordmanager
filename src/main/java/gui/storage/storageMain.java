@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class storageMain extends JFrame {
     private JButton addNewButton;
     private JButton saveButton;
+    private JButton deleteButton;
     private JTextField domainTextField;
     private JTextField usernameTextField;
     private JTextField passwordTextField;
@@ -28,9 +29,12 @@ public class storageMain extends JFrame {
 
     private DataOperations dataOperations = new DataOperations();
     DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+    boolean deleteItem = false;
 
     public storageMain(String filePath) {
         File file = new File(filePath);
+        deleteButton.setEnabled(false);
+        saveButton.setEnabled(false);
         if(!file.exists()) {
             firstAppBoot(filePath);
         } else {
@@ -41,13 +45,15 @@ public class storageMain extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onSave( list.getSelectedIndex(),
+                onSave(
+                        list.getSelectedIndex(),
                         domainTextField.getText(),
                         usernameTextField.getText(),
                         emailTextField.getText(),
                         passwordTextField.getText(),
                         additionalCommentsTextField.getText(),
-                        filePath);
+                        filePath)
+                ;
             }
         });
 
@@ -58,17 +64,29 @@ public class storageMain extends JFrame {
             }
         });
 
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteElement(list.getSelectedIndex(), filePath);
+                deleteItem = false;
+                deleteButton.setEnabled(false);
+                saveButton.setEnabled(false);
+            }
+        });
+
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()) {
+                saveButton.setEnabled(true);
+                deleteButton.setEnabled(true);
+                if(!e.getValueIsAdjusting() && !deleteItem) {
                     setFields(list.getSelectedIndex());
                 }
             }
         });
     }
 
-    public void firstAppBoot(String filePath) {
+    private void firstAppBoot(String filePath) {
         CredentialsElement firstElement = new CredentialsElement("Welcome!", "", "", "", "");
         ArrayList<CredentialsElement> testList = new ArrayList<>();
         testList.add(firstElement);
@@ -81,7 +99,7 @@ public class storageMain extends JFrame {
         defaultListModel.addElement(dataOperations.getDataList().get(0).getDomain());
     }
 
-    public void loadListPanel(String filePath) {
+    private void loadListPanel(String filePath) {
         //dataOperations = new DataOperations();
         try {
             dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
@@ -93,7 +111,7 @@ public class storageMain extends JFrame {
         }
     }
 
-    public void writeListPanel(String filePath) {
+    private void writeListPanel(String filePath) {
         try {
             FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
         } catch (Exception e) {
@@ -115,6 +133,9 @@ public class storageMain extends JFrame {
         dataOperations.getDataList().get(listIndex).setEmail(email);
         dataOperations.getDataList().get(listIndex).setPassword(password);
         dataOperations.getDataList().get(listIndex).setAdditionalComments(additionalComments);
+        if(!domain.equals(defaultListModel.get(listIndex))) {
+            defaultListModel.set(listIndex, domain);
+        }
         writeListPanel(filePath);
     }
 
@@ -122,6 +143,23 @@ public class storageMain extends JFrame {
         CredentialsElement credentialsElement = new CredentialsElement();
         dataOperations.addNewElement(credentialsElement);
         defaultListModel.addElement(credentialsElement.getDomain());
+    }
+
+    private void deleteElement(int listIndex, String filePath) {
+        if(listIndex >= 0) {
+            deleteItem = true;
+            domainTextField.setText("");
+            usernameTextField.setText("");
+            emailTextField.setText("");
+            passwordTextField.setText("");
+            additionalCommentsTextField.setText("");
+            System.out.println("Indexul este: " + listIndex);
+            defaultListModel.removeElementAt(listIndex);
+            //list.remove(listIndex);
+            dataOperations.getDataList().remove(listIndex);
+            list.clearSelection();
+            writeListPanel(filePath);
+        }
     }
 
     public static void main(String[] args) {
