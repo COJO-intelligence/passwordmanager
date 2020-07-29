@@ -110,7 +110,23 @@ public class Login {
 		return masterPass.length == messageDigest.getDigestLength();
 	}
 
+	public boolean checkPasswordStrength()
+	{
+		// The password should be at least six characters long.
+		// The password should contain at least one letter.
+		// The password should have at least one digit.
+		if ((password.length() >= 6) &&
+				(password.length() <= 10)&&
+				(password.matches(".*[A-Z]+.*")) &&
+				(password.matches(".*[a-z]+.*")) &&
+				(password.matches(".*[0-9]+.*")) )
+			return true;
+		else
+			return false;
+	}
+}
+
 //	public void setPassword(String password) {
 //		this.password = password;
 //	}
-}
+

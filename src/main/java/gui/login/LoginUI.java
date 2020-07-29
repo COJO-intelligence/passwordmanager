@@ -27,8 +27,6 @@ public class LoginUI {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                resultLabel.setText("Login succesful. Password is: " + new String(passwordField.getPassword()));
-
                 try {
                     Login login = new Login(new String(passwordField.getPassword()));
                     if (login.validateUserPassword())

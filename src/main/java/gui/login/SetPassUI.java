@@ -29,8 +29,15 @@ public class SetPassUI {
                 {
                     try {
                         Login login = new Login(new String(passwordField.getPassword()));
-                        login.setUserPassword();
-                        goToNextFrame();
+                        if (login.checkPasswordStrength()) {
+                            login.setUserPassword();
+                            goToNextFrame();
+                        }
+                        else
+                        {
+                            resultLabel.setText("Password must contain lower and upper characters, digits and be 6-10 in length");
+                            resultLabel.setForeground(Color.red);
+                        }
                     } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
                         noSuchAlgorithmException.printStackTrace();
                     } catch (IOException ioException) {
