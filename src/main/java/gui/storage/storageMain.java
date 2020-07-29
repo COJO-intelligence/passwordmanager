@@ -35,6 +35,7 @@ public class storageMain extends JFrame {
         File file = new File(filePath);
         deleteButton.setEnabled(false);
         saveButton.setEnabled(false);
+        elementPanel.setVisible(false);
         if(!file.exists()) {
             firstAppBoot(filePath);
         } else {
@@ -52,8 +53,8 @@ public class storageMain extends JFrame {
                         emailTextField.getText(),
                         passwordTextField.getText(),
                         additionalCommentsTextField.getText(),
-                        filePath)
-                ;
+                        filePath
+                );
             }
         });
 
@@ -79,7 +80,8 @@ public class storageMain extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 saveButton.setEnabled(true);
                 deleteButton.setEnabled(true);
-                if(!e.getValueIsAdjusting() && !deleteItem) {
+                if(!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
+                    elementPanel.setVisible(true);
                     setFields(list.getSelectedIndex());
                 }
             }
@@ -147,7 +149,7 @@ public class storageMain extends JFrame {
 
     private void deleteElement(int listIndex, String filePath) {
         if(listIndex >= 0) {
-            deleteItem = true;
+            elementPanel.setVisible(false);
             domainTextField.setText("");
             usernameTextField.setText("");
             emailTextField.setText("");
