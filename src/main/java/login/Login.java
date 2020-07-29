@@ -116,7 +116,7 @@ public class Login {
 		// The password should contain at least one letter.
 		// The password should have at least one digit.
 		if ((password.length() >= 6) &&
-				(password.length() <= 10)&&
+				(password.length() <= 20)&&
 				(password.matches(".*[A-Z]+.*")) &&
 				(password.matches(".*[a-z]+.*")) &&
 				(password.matches(".*[0-9]+.*")) )

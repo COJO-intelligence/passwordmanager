@@ -35,7 +35,7 @@ public class SetPassUI {
                         }
                         else
                         {
-                            resultLabel.setText("Password must contain lower and upper characters, digits and be 6-10 in length");
+                            resultLabel.setText("Password must contain lower and upper characters, digits and be 6-20 in length");
                             resultLabel.setForeground(Color.red);
                         }
                     } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
