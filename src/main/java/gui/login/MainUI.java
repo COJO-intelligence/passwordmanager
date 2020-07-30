@@ -1,5 +1,8 @@
 package main.java.gui.login;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import main.java.login.Login;
 
 import javax.swing.*;
@@ -9,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 public class MainUI {
 
     public static void main(String[] args) {
-
+        FlatDarculaLaf.install();
         try {
             Login login = new Login();
             if (login.isPasswordSet())
@@ -23,6 +26,10 @@ public class MainUI {
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
+        finally {
+
+
+        }
 
 
     }
@@ -35,6 +42,7 @@ public class MainUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.getRootPane().setDefaultButton(loginUI.getLoginButton());
     }
 
@@ -46,6 +54,7 @@ public class MainUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
         frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
     }
 }

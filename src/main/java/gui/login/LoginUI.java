@@ -1,5 +1,6 @@
 package main.java.gui.login;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import main.java.gui.storage.storageMain;
 import main.java.login.Login;
 import main.java.login.PasswordExistsException;
@@ -78,10 +79,26 @@ public class LoginUI {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
         topFrame.dispose();
         JFrame frame = new JFrame("Storage");
-        frame.setContentPane(new storageMain("test.encrypt").getMainPanel());
+        storageMain storageGUI = new storageMain("test.encrypt");
+        frame.setContentPane(storageGUI.getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                storageGUI.writeListPanel("test.encrypt");
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+
+                }
+            }
+        });
+
     }
 
     private void startSetPassFrame()
@@ -95,6 +112,7 @@ public class LoginUI {
         frame.pack();
         frame.setVisible(true);
         frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
+        frame.setResizable(false);
     }
 
     public JPanel getMainPanel() {

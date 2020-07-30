@@ -6,6 +6,7 @@ import main.java.storage.FileOperations;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -121,7 +122,7 @@ public class storageMain extends JFrame {
         }
     }
 
-    private void writeListPanel(String filePath) {
+    public void writeListPanel(String filePath) {
         try {
             dataOperations.writeDataListToFile(filePath);
             //FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
@@ -195,5 +196,9 @@ public class storageMain extends JFrame {
                 }
             }
         });
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 }
