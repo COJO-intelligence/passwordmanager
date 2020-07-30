@@ -19,4 +19,10 @@ public class DataOperations implements Serializable {
         dataList.add(credentialsElement);
     }
 
+    /*
+    public void writeDataListToFile(String filePath) {
+        FileOperations.writeAllElementsIntoFile(dataList, filePath);
+    }
+     */
+
 }

@@ -32,6 +32,7 @@ public class storageMain extends JFrame {
     boolean deleteItem = false;
 
     public storageMain(String filePath) {
+
         File file = new File(filePath);
         deleteButton.setEnabled(false);
         saveButton.setEnabled(false);
@@ -68,10 +69,16 @@ public class storageMain extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int index = list.getSelectedIndex();
                 deleteElement(list.getSelectedIndex(), filePath);
                 deleteItem = false;
                 deleteButton.setEnabled(false);
                 saveButton.setEnabled(false);
+                if(index == 0 ){
+                    list.setSelectedIndex(index);
+                } else {
+                    list.setSelectedIndex(index - 1);
+                }
             }
         });
 
@@ -159,8 +166,9 @@ public class storageMain extends JFrame {
             defaultListModel.removeElementAt(listIndex);
             //list.remove(listIndex);
             dataOperations.getDataList().remove(listIndex);
-            list.clearSelection();
-            writeListPanel(filePath);
+            //list.clearSelection();
+
+            //writeListPanel(filePath);
         }
     }
 
@@ -172,5 +180,18 @@ public class storageMain extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                storageGUI.writeListPanel(filePath);
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+
+                }
+            }
+        });
     }
 }
