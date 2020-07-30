@@ -101,7 +101,7 @@ public class storageMain extends JFrame {
         testList.add(firstElement);
         dataOperations.setDataList(testList);
         try {
-            FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
+            dataOperations.writeDataListToFile(filePath);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -111,7 +111,8 @@ public class storageMain extends JFrame {
     private void loadListPanel(String filePath) {
         //dataOperations = new DataOperations();
         try {
-            dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
+            dataOperations.loadDataListToDataOperationsObject(filePath);
+            //dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +123,8 @@ public class storageMain extends JFrame {
 
     private void writeListPanel(String filePath) {
         try {
-            FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
+            dataOperations.writeDataListToFile(filePath);
+            //FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }

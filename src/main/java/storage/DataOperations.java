@@ -1,6 +1,12 @@
 package main.java.storage;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
 import java.io.Serializable;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 public class DataOperations implements Serializable {
@@ -19,10 +25,14 @@ public class DataOperations implements Serializable {
         dataList.add(credentialsElement);
     }
 
-    /*
-    public void writeDataListToFile(String filePath) {
+
+    public void writeDataListToFile(String filePath) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException {
         FileOperations.writeAllElementsIntoFile(dataList, filePath);
     }
-     */
+
+    public void loadDataListToDataOperationsObject(String filePath) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, ClassNotFoundException, IllegalBlockSizeException {
+        this.dataList = FileOperations.loadAllElementsIntoArrayList(filePath);
+    }
+
 
 }

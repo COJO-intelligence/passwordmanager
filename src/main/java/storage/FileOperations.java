@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 
 public class FileOperations {
 
@@ -49,10 +50,10 @@ public class FileOperations {
         }
     }
 
-    public static DataOperations loadAllElementsIntoArrayList(String inputFilePath)
+    public static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));
-        DataOperations dataList = (DataOperations) objectInputStream.readObject();
+        ArrayList<CredentialsElement> dataList = (ArrayList<CredentialsElement>) objectInputStream.readObject();
         objectInputStream.close();
         return dataList;
     }
@@ -74,7 +75,7 @@ public class FileOperations {
         return decryptedContent;
     }
 
-    public static void writeAllElementsIntoFile(DataOperations dataList, String outputFilePath)
+    public static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList, String outputFilePath)
             throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
