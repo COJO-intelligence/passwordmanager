@@ -55,26 +55,6 @@
           </grid>
         </constraints>
       </vspacer>
-      <component id="e534c" class="javax.swing.JPasswordField" binding="passwordField">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <minimum-size width="100" height="30"/>
-            <preferred-size width="200" height="30"/>
-            <maximum-size width="300" height="30"/>
-          </grid>
-        </constraints>
-        <properties>
-          <opaque value="true"/>
-          <text value=""/>
-          <toolTipText value="Enter password"/>
-        </properties>
-        <clientProperties>
-          <JPasswordField.cutCopyAllowed class="java.lang.Boolean" value="false"/>
-          <caretAspectRatio class="java.lang.Double" value="0.0"/>
-          <caretWidth class="java.lang.Integer" value="0"/>
-          <html.disable class="java.lang.Boolean" value="false"/>
-        </clientProperties>
-      </component>
       <component id="d29c6" class="javax.swing.JLabel" binding="enterLabel">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="4" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -119,22 +99,6 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="36add" class="javax.swing.JButton" binding="loginButton">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <minimum-size width="100" height="50"/>
-            <preferred-size width="150" height="70"/>
-            <maximum-size width="200" height="100"/>
-          </grid>
-        </constraints>
-        <properties>
-          <actionCommand value="login"/>
-          <background color="-14013904"/>
-          <foreground color="-3355444"/>
-          <label value="Login"/>
-          <text resource-bundle="main/resources/strings" key="login"/>
-        </properties>
-      </component>
       <component id="946f6" class="javax.swing.JButton" binding="resetButton">
         <constraints>
           <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
@@ -156,6 +120,42 @@
           <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
+      <component id="36add" class="javax.swing.JButton" binding="loginButton">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <minimum-size width="100" height="50"/>
+            <preferred-size width="150" height="70"/>
+            <maximum-size width="200" height="100"/>
+          </grid>
+        </constraints>
+        <properties>
+          <actionCommand value="login"/>
+          <background color="-14013904"/>
+          <foreground color="-3355444"/>
+          <label value="Login"/>
+          <text resource-bundle="main/resources/strings" key="login"/>
+        </properties>
+      </component>
+      <component id="e534c" class="javax.swing.JPasswordField" binding="passwordField">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="100" height="30"/>
+            <preferred-size width="200" height="30"/>
+            <maximum-size width="300" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <opaque value="true"/>
+          <text value=""/>
+          <toolTipText value="Enter password"/>
+        </properties>
+        <clientProperties>
+          <JPasswordField.cutCopyAllowed class="java.lang.Boolean" value="false"/>
+          <caretAspectRatio class="java.lang.Double" value="0.0"/>
+          <caretWidth class="java.lang.Integer" value="0"/>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+      </component>
     </children>
   </grid>
 </form>

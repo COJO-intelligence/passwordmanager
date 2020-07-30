@@ -25,7 +25,7 @@ public class CredentialsElement implements Serializable {
     public CredentialsElement() {
         elementCounter++;
         this.elementID = elementCounter;
-        this.domain = "Password Manager";
+        this.domain = "Password Manager" + elementCounter;
         this.username = null;
         this.email = null;
         this.password = null;

@@ -32,9 +32,11 @@ public class storageMain extends JFrame {
     boolean deleteItem = false;
 
     public storageMain(String filePath) {
+
         File file = new File(filePath);
         deleteButton.setEnabled(false);
         saveButton.setEnabled(false);
+        elementPanel.setVisible(false);
         if(!file.exists()) {
             firstAppBoot(filePath);
         } else {
@@ -52,8 +54,8 @@ public class storageMain extends JFrame {
                         emailTextField.getText(),
                         passwordTextField.getText(),
                         additionalCommentsTextField.getText(),
-                        filePath)
-                ;
+                        filePath
+                );
             }
         });
 
@@ -67,10 +69,16 @@ public class storageMain extends JFrame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int index = list.getSelectedIndex();
                 deleteElement(list.getSelectedIndex(), filePath);
                 deleteItem = false;
                 deleteButton.setEnabled(false);
                 saveButton.setEnabled(false);
+                if(index == 0 ){
+                    list.setSelectedIndex(index);
+                } else {
+                    list.setSelectedIndex(index - 1);
+                }
             }
         });
 
@@ -79,7 +87,8 @@ public class storageMain extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 saveButton.setEnabled(true);
                 deleteButton.setEnabled(true);
-                if(!e.getValueIsAdjusting() && !deleteItem && list.getSelectedIndex() >= 0) {
+                if(!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
+                    elementPanel.setVisible(true);
                     setFields(list.getSelectedIndex());
                 }
             }
@@ -92,7 +101,7 @@ public class storageMain extends JFrame {
         testList.add(firstElement);
         dataOperations.setDataList(testList);
         try {
-            FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
+            dataOperations.writeDataListToFile(filePath);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +111,8 @@ public class storageMain extends JFrame {
     private void loadListPanel(String filePath) {
         //dataOperations = new DataOperations();
         try {
-            dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
+            dataOperations.loadDataListToDataOperationsObject(filePath);
+            //dataOperations = FileOperations.loadAllElementsIntoArrayList(filePath);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -113,7 +123,8 @@ public class storageMain extends JFrame {
 
     private void writeListPanel(String filePath) {
         try {
-            FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
+            dataOperations.writeDataListToFile(filePath);
+            //FileOperations.writeAllElementsIntoFile(dataOperations, filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,7 +158,7 @@ public class storageMain extends JFrame {
 
     private void deleteElement(int listIndex, String filePath) {
         if(listIndex >= 0) {
-            deleteItem = true;
+            elementPanel.setVisible(false);
             domainTextField.setText("");
             usernameTextField.setText("");
             emailTextField.setText("");
@@ -157,13 +168,10 @@ public class storageMain extends JFrame {
             defaultListModel.removeElementAt(listIndex);
             //list.remove(listIndex);
             dataOperations.getDataList().remove(listIndex);
-            list.clearSelection();
-            writeListPanel(filePath);
-        }
-    }
+            //list.clearSelection();
 
-    public JPanel getMainPanel() {
-        return mainPanel;
+            //writeListPanel(filePath);
+        }
     }
 
     public static void main(String[] args) {
@@ -174,5 +182,18 @@ public class storageMain extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                storageGUI.writeListPanel(filePath);
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+
+                }
+            }
+        });
     }
 }
