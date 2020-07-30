@@ -4,7 +4,6 @@ import main.java.manager.KeyManager;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.security.*;
@@ -50,7 +49,7 @@ public class FileOperations {
         }
     }
 
-    public static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
+    protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));
         ArrayList<CredentialsElement> dataList = (ArrayList<CredentialsElement>) objectInputStream.readObject();
@@ -75,7 +74,7 @@ public class FileOperations {
         return decryptedContent;
     }
 
-    public static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList, String outputFilePath)
+    protected static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList, String outputFilePath)
             throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

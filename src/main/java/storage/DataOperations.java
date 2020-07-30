@@ -9,7 +9,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
-public class DataOperations implements Serializable {
+public class DataOperations extends FileOperations implements Serializable  {
 
     private ArrayList<CredentialsElement> dataList;
 
@@ -24,7 +24,6 @@ public class DataOperations implements Serializable {
     public void addNewElement(CredentialsElement credentialsElement) {
         dataList.add(credentialsElement);
     }
-
 
     public void writeDataListToFile(String filePath) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException {
         FileOperations.writeAllElementsIntoFile(dataList, filePath);
