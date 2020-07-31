@@ -44,34 +44,25 @@ public class LoginUI {
                 }
             }
         });
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Login login = null;
-                try {
-                    login = new Login();
-                    login.resetPassword();
-                    startSetPassFrame();
-                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-                    noSuchAlgorithmException.printStackTrace();
-                } catch (PasswordExistsException passwordExistsException) {
-                    passwordExistsException.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-
-            }
-        });
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("LoginUI");
-        LoginUI loginUI = new LoginUI();
-        frame.setContentPane(loginUI.mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.getRootPane().setDefaultButton(loginUI.loginButton);
+//        resetButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                Login login = null;
+//                try {
+//                    login = new Login();
+//                    login.resetPassword();
+//                    startSetPassFrame();
+//                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+//                    noSuchAlgorithmException.printStackTrace();
+//                } catch (PasswordExistsException passwordExistsException) {
+//                    passwordExistsException.printStackTrace();
+//                } catch (IOException ioException) {
+//                    ioException.printStackTrace();
+//                }
+//
+//            }
+//        });
+        resetButton.setVisible(false);
     }
 
     private void goToNextFrame()
