@@ -82,6 +82,21 @@ public class LoginUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                String filePath = "test.encrypt";
+                storageMain storageGUI = new storageMain(filePath);
+                storageGUI.writeListPanel(filePath);
+                if (JOptionPane.showConfirmDialog(frame,
+                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+
+                }
+            }
+        });
     }
 
     private void startSetPassFrame()

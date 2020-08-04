@@ -267,6 +267,8 @@
             <properties>
               <font name="Arial Black" size="20" style="0"/>
               <foreground color="-3355444"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
               <text value="Password Manager"/>
             </properties>
           </component>
