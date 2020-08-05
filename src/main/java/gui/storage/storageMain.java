@@ -27,6 +27,7 @@ public class storageMain extends JFrame {
     private JPanel elementPanel;
     private JPanel titlePanel;
     private JPanel elementPanel2;
+    private JTextField linkTextField;
 
     private DataOperations dataOperations = new DataOperations();
     DefaultListModel<String> defaultListModel = new DefaultListModel<>();
@@ -51,6 +52,7 @@ public class storageMain extends JFrame {
                 onSave(
                         list.getSelectedIndex(),
                         domainTextField.getText(),
+                        linkTextField.getText(),
                         usernameTextField.getText(),
                         emailTextField.getText(),
                         passwordTextField.getText(),
@@ -133,14 +135,16 @@ public class storageMain extends JFrame {
 
     private void setFields(int listIndex) {
         domainTextField.setText(dataOperations.getDataList().get(listIndex).getDomain());
+        linkTextField.setText(dataOperations.getDataList().get(listIndex).getLink());
         usernameTextField.setText(dataOperations.getDataList().get(listIndex).getUsername());
         emailTextField.setText(dataOperations.getDataList().get(listIndex).getEmail());
         passwordTextField.setText(dataOperations.getDataList().get(listIndex).getPassword());
         additionalCommentsTextField.setText(dataOperations.getDataList().get(listIndex).getAdditionalComments());
     }
 
-    private void onSave(int listIndex, String domain, String username, String email, String password, String additionalComments, String filePath) {
+    private void onSave(int listIndex, String domain, String link, String username, String email, String password, String additionalComments, String filePath) {
         dataOperations.getDataList().get(listIndex).setDomain(domain);
+        dataOperations.getDataList().get(listIndex).setLink(link);
         dataOperations.getDataList().get(listIndex).setUsername(username);
         dataOperations.getDataList().get(listIndex).setEmail(email);
         dataOperations.getDataList().get(listIndex).setPassword(password);

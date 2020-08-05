@@ -7,6 +7,7 @@ public class CredentialsElement implements Serializable {
     private int elementID;
     private static int elementCounter = 0;
     private String domain;
+    private String link;
     private String username;
     private String email;
     private String password;
@@ -42,9 +43,11 @@ public class CredentialsElement implements Serializable {
 
     public String getDomain() { return domain; }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+    public void setDomain(String domain) { this.domain = domain; }
+
+    public String getLink() { return link; }
+
+    public void setLink(String domain) { this.link= domain; }
 
     public String getUsername() {
         return username;
