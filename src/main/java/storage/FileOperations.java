@@ -5,19 +5,11 @@ import main.java.manager.KeyManager;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 public class FileOperations {
-
-    private static final byte[] key = {
-            0x2A, 0x4D, 0x61, 0x73,
-            0x74, 0x65, 0x72, 0x20,
-            0x49, 0x53, 0x4D, 0x20,
-            0x32, 0x30, 0x31, 0x37
-    };
 
     private static final byte[] initialIV = {
             0x01, 0x01, 0x01, 0x01,
@@ -25,29 +17,6 @@ public class FileOperations {
             0x01, 0x01, 0x01, 0x01,
             0x01, 0x01, 0x01, 0x01
     };
-
-    public static void createFile(String outputFilePath) throws IOException {
-        File outputFile = new File(outputFilePath);
-        if(!outputFile.createNewFile()) {
-            throw new FileAlreadyExistsException(outputFilePath);
-        }
-    }
-
-    public static void destroyFile(String inputFilePath) throws IOException {
-        File inputFile = new File (inputFilePath);
-        FileInputStream fis = new FileInputStream(inputFile);
-        FileOutputStream fos = new FileOutputStream(inputFile);
-        while(fis.read() != -1) {
-            fos.write(0x01);
-        }
-        fis.close();
-        fos.flush();
-        fos.close();
-        boolean isRemoved = false;
-        while (!isRemoved) {
-            isRemoved = inputFile.delete();
-        }
-    }
 
     protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
@@ -61,11 +30,7 @@ public class FileOperations {
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         FileInputStream fis = new FileInputStream(inputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-        //am adaugat aici modul nou de utilizare a cheii
         SecretKey secretKey = KeyManager.getSecretKey();
-
-
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
         byte[] encryptedContent = fis.readAllBytes();
@@ -88,15 +53,10 @@ public class FileOperations {
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         FileOutputStream fos = new FileOutputStream(outputFilePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-        //am adaugat aici modul nou de utilizare a cheii
         if (!KeyManager.isSecretKeySet()) {
             KeyManager.setSecretKey();
-            System.out.println("Nu are cheie!");
         }
-
         SecretKey secretKey = KeyManager.getSecretKey();
-
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
         fos.write(cipher.doFinal(inputByteArray));

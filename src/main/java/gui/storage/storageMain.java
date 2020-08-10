@@ -2,11 +2,8 @@ package main.java.gui.storage;
 
 import main.java.storage.CredentialsElement;
 import main.java.storage.DataOperations;
-import main.java.storage.FileOperations;
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,9 +24,10 @@ public class storageMain extends JFrame {
     private JPanel elementPanel;
     private JPanel titlePanel;
     private JPanel elementPanel2;
+    private JLabel Link;
     private JTextField linkTextField;
 
-    private DataOperations dataOperations = new DataOperations();
+    private final DataOperations dataOperations = new DataOperations();
     DefaultListModel<String> defaultListModel = new DefaultListModel<>();
     boolean deleteItem = false;
 
@@ -62,44 +60,40 @@ public class storageMain extends JFrame {
             }
         });
 
-        addNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAddNew();
+        addNewButton.addActionListener(e -> {
+            onAddNew();
+            list.setSelectedIndex(list.getSelectedIndex() + 1);
+        });
+
+        deleteButton.addActionListener(e -> {
+            int index = list.getSelectedIndex();
+            deleteElement(list.getSelectedIndex());
+            deleteItem = false;
+            deleteButton.setEnabled(false);
+            saveButton.setEnabled(false);
+            if(index == 0 || index <= list.getLastVisibleIndex()){
+                list.setSelectedIndex(index);
+            } else {
+                list.setSelectedIndex(index - 1);
             }
         });
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int index = list.getSelectedIndex();
-                deleteElement(list.getSelectedIndex(), filePath);
-                deleteItem = false;
-                deleteButton.setEnabled(false);
-                saveButton.setEnabled(false);
-                if(index == 0 ){
-                    list.setSelectedIndex(index);
-                } else {
-                    list.setSelectedIndex(index - 1);
-                }
-            }
-        });
-
-        list.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                saveButton.setEnabled(true);
-                deleteButton.setEnabled(true);
-                if(!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
-                    elementPanel.setVisible(true);
-                    setFields(list.getSelectedIndex());
-                }
+        list.addListSelectionListener(e -> {
+            saveButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+            if(!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
+                elementPanel.setVisible(true);
+                setFields(list.getSelectedIndex());
             }
         });
     }
 
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
     private void firstAppBoot(String filePath) {
-        CredentialsElement firstElement = new CredentialsElement("Welcome!", "", "", "", "");
+        CredentialsElement firstElement = new CredentialsElement("Welcome!", "", "", "", "", "");
         ArrayList<CredentialsElement> testList = new ArrayList<>();
         testList.add(firstElement);
         dataOperations.setDataList(testList);
@@ -161,7 +155,7 @@ public class storageMain extends JFrame {
         defaultListModel.addElement(credentialsElement.getDomain());
     }
 
-    private void deleteElement(int listIndex, String filePath) {
+    private void deleteElement(int listIndex) {
         if(listIndex >= 0) {
             elementPanel.setVisible(false);
             domainTextField.setText("");
@@ -169,13 +163,9 @@ public class storageMain extends JFrame {
             emailTextField.setText("");
             passwordTextField.setText("");
             additionalCommentsTextField.setText("");
-            System.out.println("Indexul este: " + listIndex);
+            System.out.println("The index is: " + listIndex);
             defaultListModel.removeElementAt(listIndex);
-            //list.remove(listIndex);
             dataOperations.getDataList().remove(listIndex);
-            //list.clearSelection();
-
-            //writeListPanel(filePath);
         }
     }
 
@@ -192,7 +182,7 @@ public class storageMain extends JFrame {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 storageGUI.writeListPanel(filePath);
                 if (JOptionPane.showConfirmDialog(frame,
-                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
+                        "The passwords were saved!", "Success!",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                     System.exit(0);
@@ -202,7 +192,4 @@ public class storageMain extends JFrame {
         });
     }
 
-    public JPanel getMainPanel() {
-        return mainPanel;
-    }
 }

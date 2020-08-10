@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CredentialsElement implements Serializable {
 
-    private int elementID;
+    private final int elementID;
     private static int elementCounter = 0;
     private String domain;
     private String link;
@@ -13,10 +13,11 @@ public class CredentialsElement implements Serializable {
     private String password;
     private String additionalComments;
 
-    public CredentialsElement(String domain, String username, String email, String password, String additionalComments) {
+    public CredentialsElement(String domain, String link, String username, String email, String password, String additionalComments) {
         elementCounter++;
         this.elementID = elementCounter;
         this.domain = domain;
+        this.link = link;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -37,17 +38,21 @@ public class CredentialsElement implements Serializable {
         return this.elementID;
     }
 
-    public void setElementID(int elementID) {
-        this.elementID = elementID;
+    public String getDomain() {
+        return domain;
     }
 
-    public String getDomain() { return domain; }
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
-    public void setDomain(String domain) { this.domain = domain; }
+    public String getLink() {
+        return link;
+    }
 
-    public String getLink() { return link; }
-
-    public void setLink(String domain) { this.link= domain; }
+    public void setLink(String domain) {
+        this.link= domain;
+    }
 
     public String getUsername() {
         return username;
