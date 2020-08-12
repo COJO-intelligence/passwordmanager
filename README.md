@@ -1,4 +1,4 @@
-##Java Password Manager
+#Java Password Manager
 Presenting to the world a solution for a basic password manager built using Oracle's java security framework and enhanced with Swing-like user interface.
 
 ###Prerequisites
