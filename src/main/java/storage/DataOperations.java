@@ -9,6 +9,8 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
+//TODO remove inputFilePath
+//TODO MAYBE sort
 public class DataOperations extends FileOperations implements Serializable  {
 
     private ArrayList<CredentialsElement> dataList;

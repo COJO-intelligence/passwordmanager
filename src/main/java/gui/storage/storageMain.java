@@ -169,6 +169,7 @@ public class storageMain extends JFrame {
         }
     }
 
+    //TODO DELETE MAIN
     public static void main(String[] args) {
         String filePath = "test.encrypt";
         storageMain storageGUI = new storageMain(filePath);

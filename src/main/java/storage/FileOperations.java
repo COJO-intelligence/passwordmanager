@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class FileOperations {
 
+    //TODO - Random IV -saved in key manager
     private static final byte[] initialIV = {
             0x01, 0x01, 0x01, 0x01,
             0x01, 0x01, 0x01, 0x01,
@@ -18,6 +19,7 @@ public class FileOperations {
             0x01, 0x01, 0x01, 0x01
     };
 
+    //TODO inputFilePath - local
     protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));

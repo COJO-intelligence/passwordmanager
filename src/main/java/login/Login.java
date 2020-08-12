@@ -9,6 +9,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class Login {
+
+	//TODO arrange constructors and methods
+	//TODO javaDocs for all methods comment + return without throws
 	
 	private String password;
 	private final static File LOGIN_FILE = new File("master.dat");
@@ -110,6 +113,7 @@ public class Login {
 		return masterPass.length == messageDigest.getDigestLength();
 	}
 
+	//TODO improve password input
 	public boolean checkPasswordStrength()
 	{
 		// The password should be at least six characters long.

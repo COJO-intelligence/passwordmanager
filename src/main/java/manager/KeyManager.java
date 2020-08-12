@@ -67,6 +67,8 @@ public class KeyManager {
         return secretKey;
     }
 
+    //TODO find solution
+    //TODO find solution for macOS - Catalina and Mojave + Ubuntu 16.04, 18.04, 20.04 and Windows 7 and Windows 10
     private static char[] getHardwarePassword() throws NoSuchAlgorithmException, IOException {
         Process p = Runtime.getRuntime().exec("wmic baseboard get serialnumber");
         p.getOutputStream().close();

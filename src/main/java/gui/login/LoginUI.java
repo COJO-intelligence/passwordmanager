@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+//TODO try catch here
+//TODO Finally for login
 public class LoginUI {
 
     private JPanel mainPanel;

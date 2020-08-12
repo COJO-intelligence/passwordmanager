@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+
+//TODO class to administrate frames
+//TODO REFORMAT GUI
 public class MainUI {
 
     public static void main(String[] args) {
