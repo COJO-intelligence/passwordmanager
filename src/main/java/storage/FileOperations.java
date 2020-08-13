@@ -19,18 +19,34 @@ public class FileOperations {
             0x01, 0x01, 0x01, 0x01
     };
 
-    //TODO inputFilePath - local
-    protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList(String inputFilePath)
+    private static final String filePath = "pm.enc";
+
+    protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList()
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent(inputFilePath)));
+        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent()));
         ArrayList<CredentialsElement> dataList = (ArrayList<CredentialsElement>) objectInputStream.readObject();
         objectInputStream.close();
         return dataList;
     }
 
-    private static byte[] decryptContent(String inputFilePath)
+    protected static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList)
+            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(dataList);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        encryptContent(byteArrayOutputStream.toByteArray());
+    }
+
+    protected static boolean isFilePresent() {
+        File file = new File(filePath);
+        return file.exists();
+    }
+
+    private static byte[] decryptContent()
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        FileInputStream fis = new FileInputStream(inputFilePath);
+        FileInputStream fis = new FileInputStream(filePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey secretKey = KeyManager.getSecretKey();
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
@@ -41,19 +57,9 @@ public class FileOperations {
         return decryptedContent;
     }
 
-    protected static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList, String outputFilePath)
-            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(dataList);
-        objectOutputStream.flush();
-        objectOutputStream.close();
-        encryptContent(outputFilePath, byteArrayOutputStream.toByteArray());
-    }
-
-    private static void encryptContent(String outputFilePath, byte[] inputByteArray)
+    private static void encryptContent(byte[] inputByteArray)
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        FileOutputStream fos = new FileOutputStream(outputFilePath);
+        FileOutputStream fos = new FileOutputStream(filePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         if (!KeyManager.isSecretKeySet()) {
             KeyManager.setSecretKey();

@@ -9,9 +9,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
-//TODO remove inputFilePath
-//TODO MAYBE sort
-public class DataOperations extends FileOperations implements Serializable  {
+public class DataOperations implements Serializable  {
 
     private ArrayList<CredentialsElement> dataList;
 
@@ -27,13 +25,16 @@ public class DataOperations extends FileOperations implements Serializable  {
         dataList.add(credentialsElement);
     }
 
-    public void writeDataListToFile(String filePath) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException {
-        FileOperations.writeAllElementsIntoFile(dataList, filePath);
+    public void writeDataListToFile() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException {
+        FileOperations.writeAllElementsIntoFile(dataList);
     }
 
-    public void loadDataListToDataOperationsObject(String filePath) throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, ClassNotFoundException, IllegalBlockSizeException {
-        this.dataList = FileOperations.loadAllElementsIntoArrayList(filePath);
+    public void loadDataListToDataOperationsObject() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, ClassNotFoundException, IllegalBlockSizeException {
+        this.dataList = FileOperations.loadAllElementsIntoArrayList();
     }
 
+    public boolean isFilePresent() {
+        return FileOperations.isFilePresent();
+    }
 
 }
