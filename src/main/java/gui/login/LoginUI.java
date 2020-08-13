@@ -26,7 +26,6 @@ public class LoginUI {
     private JButton resetButton;
 
     public LoginUI() {
-        Color resultOriginalFG = resultLabel.getForeground();
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -34,7 +33,7 @@ public class LoginUI {
                     Login login = new Login(new String(passwordField.getPassword()));
                     if (login.validateUserPassword())
                     {
-                        goToNextFrame();
+                        changeContent();
                     }
                     else
                     {
@@ -46,67 +45,17 @@ public class LoginUI {
                 }
             }
         });
-//        resetButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Login login = null;
-//                try {
-//                    login = new Login();
-//                    login.resetPassword();
-//                    startSetPassFrame();
-//                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-//                    noSuchAlgorithmException.printStackTrace();
-//                } catch (PasswordExistsException passwordExistsException) {
-//                    passwordExistsException.printStackTrace();
-//                } catch (IOException ioException) {
-//                    ioException.printStackTrace();
-//                }
-//
-//            }
-//        });
         resetButton.setVisible(false);
     }
 
-    private void goToNextFrame()
+    private void changeContent()
     {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        topFrame.dispose();
-        JFrame frame = new JFrame("Storage");
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
         storageMain storageGUI = new storageMain("test.encrypt");
         frame.setContentPane(storageGUI.getMainPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                storageGUI.writeListPanel("test.encrypt");
-                if (JOptionPane.showConfirmDialog(frame,
-                        "Nu faci, dumneata, ordine la mine in birou!\nVezi ca ti-am salvat fisierul, Pitica Nenorocita!", "Aici e mana lui Videanu",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-
-                }
-            }
-        });
-
+        frame.revalidate();
     }
 
-    private void startSetPassFrame()
-    {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        topFrame.dispose();
-        JFrame frame = new JFrame("SetPassUI");
-        SetPassUI setPassUI = new SetPassUI();
-        frame.setContentPane(setPassUI.getPassPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
-        frame.setResizable(false);
-    }
 
     public JPanel getMainPanel() {
         return mainPanel;

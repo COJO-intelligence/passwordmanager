@@ -31,7 +31,7 @@ public class SetPassUI {
                         Login login = new Login(new String(passwordField.getPassword()));
                         if (login.checkPasswordStrength()) {
                             login.setUserPassword();
-                            goToNextFrame();
+                            changeContent();
                         }
                         else
                         {
@@ -55,15 +55,12 @@ public class SetPassUI {
         });
     }
 
-    private void goToNextFrame()
+    private void changeContent()
     {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(passPanel);
-        topFrame.dispose();
-        JFrame frame = new JFrame("Storage");
-        frame.setContentPane(new storageMain("test.encrypt").getMainPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(passPanel);
+        storageMain storageGUI = new storageMain("test.encrypt");
+        frame.setContentPane(storageGUI.getMainPanel());
+        frame.revalidate();
     }
 
     public JPanel getPassPanel() {

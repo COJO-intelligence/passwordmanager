@@ -32,8 +32,6 @@ public class Login {
 	/**
 	 * Validates the user input password to be the same as original
 	 * @return true or false if the password's match
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
 	 */
 	public boolean validateUserPassword() throws NoSuchAlgorithmException, IOException
 	{
@@ -45,9 +43,6 @@ public class Login {
 	/**
 	 * Sets the user password for the program, writes it in the master password file
 	 * @return true of false if the password was set
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
-	 * @throws PasswordExistsException
 	 */
 	public boolean setUserPassword() throws NoSuchAlgorithmException, IOException, PasswordExistsException {
 		if(isPasswordSet())
@@ -63,8 +58,6 @@ public class Login {
 	/**
 	 * Deletes the master password file, to create a new one
 	 * @return true or false if delete worked
-	 * @throws IOException
-	 * @throws PasswordExistsException
 	 */
 	public boolean resetPassword() throws IOException, PasswordExistsException {
 		if(!isPasswordSet())
@@ -76,7 +69,6 @@ public class Login {
 	/**
 	 * Reads the content of the master password file
 	 * @return hashed password from master file or null
-	 * @throws IOException
 	 */
 	private byte[] getHashedMasterPassword() throws IOException
 	{
@@ -104,7 +96,6 @@ public class Login {
 	/**
 	 * Check if the master password file exists and contains a password
 	 * @return true or false if exists
-	 * @throws NoSuchAlgorithmException
 	 */
 	public boolean isPasswordSet() throws IOException {
 		byte[] masterPass = getHashedMasterPassword();

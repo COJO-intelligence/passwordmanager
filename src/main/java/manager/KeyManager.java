@@ -2,10 +2,7 @@ package main.java.manager;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Scanner;
@@ -69,14 +66,45 @@ public class KeyManager {
 
     //TODO find solution
     //TODO find solution for macOS - Catalina and Mojave + Ubuntu 16.04, 18.04, 20.04 and Windows 7 and Windows 10
-    private static char[] getHardwarePassword() throws NoSuchAlgorithmException, IOException {
+    private static char[] getHardwarePassword() throws IOException {
+
+        String serial;
+
+        String OSName=  System.getProperty("os.name");
+        if(OSName.contains("Windows")){
+            serial = getWindowsMotherboard_SerialNumber();
+        }
+        else{
+            serial = GetLinuxMotherBoard_serialNumber();
+        }
+
+        String secret = randomSalt + serial;
+        return secret.toCharArray();
+    }
+
+    public static String getWindowsMotherboard_SerialNumber() throws IOException {
         Process p = Runtime.getRuntime().exec("wmic baseboard get serialnumber");
         p.getOutputStream().close();
         Scanner sc = new Scanner(p.getInputStream());
         String property = sc.next();
         String serial = sc.next();
-        String secret = property + randomSalt + serial;
-        System.out.println("The secret is:" + secret);
-        return secret.toCharArray();
+        return property + serial;
     }
+
+    public static String GetLinuxMotherBoard_serialNumber() throws IOException {
+
+        String result = "";
+        String maniBord_cmd = "dmidecode | grep 'Serial Number' | awk '{print $3}' | tail -1";
+        Process p;
+            p = Runtime.getRuntime().exec(new String[] { "sh", "-c", maniBord_cmd });// Pipe
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                result += line;
+                break;
+            }
+            br.close();
+        return result;
+    }
+
 }
