@@ -5,6 +5,8 @@ import main.java.manager.KeyManager;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -35,7 +37,8 @@ public class FileOperations {
         SecretKey secretKey = KeyManager.getSecretKey();
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-        byte[] encryptedContent = fis.readAllBytes();
+//        byte[] encryptedContent = fis.readAllBytes();
+        byte[] encryptedContent = Files.readAllBytes(Paths.get(inputFilePath));
         byte[] decryptedContent = cipher.doFinal(encryptedContent);
         fis.close();
         return decryptedContent;
