@@ -2,6 +2,7 @@ package main.java.gui.login;
 
 import main.java.gui.storage.storageUI;
 import main.java.login.Login;
+import main.java.login.PasswordExistsException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,6 @@ public class LoginUI {
     private JButton resetButton;
 
     public LoginUI() {
-        Color resultOriginalFG = resultLabel.getForeground();
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -32,7 +32,7 @@ public class LoginUI {
                     Login login = new Login(new String(passwordField.getPassword()));
                     if (login.validateUserPassword())
                     {
-                        goToNextFrame();
+                        changeContent();
                     }
                     else
                     {
@@ -44,53 +44,17 @@ public class LoginUI {
                 }
             }
         });
-//        resetButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                Login login = null;
-//                try {
-//                    login = new Login();
-//                    login.resetPassword();
-//                    startSetPassFrame();
-//                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-//                    noSuchAlgorithmException.printStackTrace();
-//                } catch (PasswordExistsException passwordExistsException) {
-//                    passwordExistsException.printStackTrace();
-//                } catch (IOException ioException) {
-//                    ioException.printStackTrace();
-//                }
-//
-//            }
-//        });
         resetButton.setVisible(false);
     }
 
-    private void goToNextFrame()
+    private void changeContent()
     {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        topFrame.dispose();
-        JFrame frame = new JFrame("Storage");
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
         storageUI storageGUI = new storageUI();
         frame.setContentPane(storageGUI.getMainPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setResizable(false);
+        frame.revalidate();
     }
 
-    private void startSetPassFrame()
-    {
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        topFrame.dispose();
-        JFrame frame = new JFrame("SetPassUI");
-        SetPassUI setPassUI = new SetPassUI();
-        frame.setContentPane(setPassUI.getPassPanel());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
-        frame.setResizable(false);
-    }
 
     public JPanel getMainPanel() {
         return mainPanel;
