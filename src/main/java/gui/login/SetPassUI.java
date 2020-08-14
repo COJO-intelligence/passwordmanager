@@ -44,7 +44,6 @@ public class SetPassUI {
                         resultLabel.setText("Password must contain lower and upper characters, digits and be 6-20 in length");
                         resultLabel.setForeground(Color.red);
                     }
-                    throw new Exception("Aoleu!?");
                 } catch (Exception exception) {
                     MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
                     JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(passPanel), "Something went wrong... Email pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
