@@ -14,7 +14,9 @@ public class KeyManager {
     private static final String randomSalt = "woa11A2@##";
 
 
-
+    /**
+     * Generates a pseudo random encryption key and stores it in a KeyStore
+     */
     public static void setSecretKey() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(null, null);
@@ -30,6 +32,11 @@ public class KeyManager {
         keyStore.store(new FileOutputStream(keyStoreLocation), password);
     }
 
+    /**
+     * Gets the encryption key from the keystore
+     *
+     * @return SecretKey object
+     */
     public static SecretKey getSecretKey() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
@@ -38,17 +45,18 @@ public class KeyManager {
         keyStore.load(new FileInputStream(keyStoreLocation), password);
         KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(keyName, pp);
 
-        SecretKey secretKey = secretKeyEntry.getSecretKey();
-        return secretKey;
+        return secretKeyEntry.getSecretKey();
     }
 
+    /**
+     * @return true or false if the encryption key exists in the keystore
+     */
     public static boolean isSecretKeySet() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
 
-        KeyStore.PasswordProtection pp = new KeyStore.PasswordProtection(password);
         File file = new File(keyStoreLocation);
-        if(!file.exists()) {
+        if (!file.exists()) {
             return false;
         }
         keyStore.load(new FileInputStream(keyStoreLocation), password);
@@ -60,21 +68,17 @@ public class KeyManager {
         KeyGenerator keyGen = KeyGenerator.getInstance(algorithmEncrypt);
         SecureRandom secRandom = new SecureRandom();
         keyGen.init(secRandom);
-        SecretKey secretKey = keyGen.generateKey();
-        return secretKey;
+        return keyGen.generateKey();
     }
 
-    //TODO find solution
-    //TODO find solution for macOS - Catalina and Mojave + Ubuntu 16.04, 18.04, 20.04 and Windows 7 and Windows 10
     private static char[] getHardwarePassword() throws IOException {
 
         String serial;
 
-        String OSName=  System.getProperty("os.name");
-        if(OSName.contains("Windows")){
+        String OSName = System.getProperty("os.name");
+        if (OSName.contains("Windows")) {
             serial = getWindowsMotherboard_SerialNumber();
-        }
-        else{
+        } else {
             serial = GetLinuxMotherBoard_serialNumber();
         }
 
@@ -82,7 +86,7 @@ public class KeyManager {
         return secret.toCharArray();
     }
 
-    public static String getWindowsMotherboard_SerialNumber() throws IOException {
+    private static String getWindowsMotherboard_SerialNumber() throws IOException {
         Process p = Runtime.getRuntime().exec("wmic baseboard get serialnumber");
         p.getOutputStream().close();
         Scanner sc = new Scanner(p.getInputStream());
@@ -91,19 +95,13 @@ public class KeyManager {
         return property + serial;
     }
 
-    public static String GetLinuxMotherBoard_serialNumber() throws IOException {
-
-        String result = "";
+    private static String GetLinuxMotherBoard_serialNumber() throws IOException {
         String maniBord_cmd = "dmidecode | grep 'Serial Number' | awk '{print $3}' | tail -1";
         Process p;
-            p = Runtime.getRuntime().exec(new String[] { "sh", "-c", maniBord_cmd });// Pipe
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                result += line;
-                break;
-            }
-            br.close();
+        p = Runtime.getRuntime().exec(new String[]{"sh", "-c", maniBord_cmd});
+        BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String result = br.readLine();
+        br.close();
         return result;
     }
 

@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 
-//TODO class to administrate frames
-//TODO REFORMAT GUI
 public class MainUI {
 
     public static void main(String[] args) {
@@ -39,7 +37,7 @@ public class MainUI {
 
     private static void startLoginFrame()
     {
-        JFrame frame = new JFrame("LoginUI");
+        JFrame frame = new JFrame("PASSWORD MANAGER");
         LoginUI loginUI = new LoginUI();
         frame.setContentPane(loginUI.getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +49,7 @@ public class MainUI {
 
     private static void startSetPassFrame()
     {
-        JFrame frame = new JFrame("SetPassUI");
+        JFrame frame = new JFrame("PASSWORD MANAGER");
         SetPassUI setPassUI = new SetPassUI();
         frame.setContentPane(setPassUI.getPassPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

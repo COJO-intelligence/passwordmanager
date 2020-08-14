@@ -1,9 +1,7 @@
 package main.java.gui.login;
 
-import com.formdev.flatlaf.FlatLightLaf;
 import main.java.gui.storage.storageMain;
 import main.java.login.Login;
-import main.java.login.PasswordExistsException;
 
 import javax.swing.*;
 import java.awt.*;
