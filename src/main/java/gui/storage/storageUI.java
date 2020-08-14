@@ -1,10 +1,20 @@
 package main.java.gui.storage;
 
+import main.java.gui.login.MainUI;
 import main.java.storage.CredentialsElement;
 import main.java.storage.DataOperations;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class storageUI extends JFrame {
     private JButton addNewButton;
@@ -21,9 +31,10 @@ public class storageUI extends JFrame {
     private JTextField linkTextField;
 
     private final DataOperations dataOperations = new DataOperations();
-    DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+    final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
 
-    public storageUI() {
+    public storageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
+
         if(dataOperations.isFilePresent()) {
             loadListPanel();
         } else {
@@ -99,8 +110,10 @@ public class storageUI extends JFrame {
     public void writeListPanel() {
         try {
             dataOperations.writeDataListToFile();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
+            JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong... Email pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
+            System.exit(2);
         }
     }
 
@@ -113,12 +126,8 @@ public class storageUI extends JFrame {
         defaultListModel.addElement(dataOperations.getDataList().get(0).getDomain());
     }
 
-    private void loadListPanel() {
-        try {
-            dataOperations.loadDataListToDataOperationsObject();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    private void loadListPanel() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KeyStoreException, ClassNotFoundException {
+        dataOperations.loadDataListToDataOperationsObject();
         for (CredentialsElement credentialsElement : dataOperations.getDataList()) {
             defaultListModel.addElement(credentialsElement.getDomain());
         }

@@ -1,7 +1,6 @@
 package main.java.login;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -96,10 +95,7 @@ public class Login {
      */
     private byte[] getHashedMasterPassword() throws IOException {
         if (LOGIN_FILE.exists()) {
-//            FileInputStream fis = new FileInputStream(LOGIN_FILE);
-            byte[] fileContent = Files.readAllBytes(Paths.get(LOGIN_FILE.getPath()));
-//            fis.close();
-            return fileContent;
+            return Files.readAllBytes(Paths.get(LOGIN_FILE.getPath()));
         }
         return null;
     }

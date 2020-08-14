@@ -48,16 +48,12 @@ public class FileOperations {
 
     private static byte[] decryptContent()
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        FileInputStream fis = new FileInputStream(filePath);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey secretKey = KeyManager.getSecretKey();
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-//        byte[] encryptedContent = fis.readAllBytes();
-        byte[] encryptedContent = Files.readAllBytes(Paths.get(inputFilePath));
-        byte[] decryptedContent = cipher.doFinal(encryptedContent);
-        fis.close();
-        return decryptedContent;
+        byte[] encryptedContent = Files.readAllBytes(Paths.get(filePath));
+        return cipher.doFinal(encryptedContent);
     }
 
     private static void encryptContent(byte[] inputByteArray)

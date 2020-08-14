@@ -1,29 +1,33 @@
 package main.java.gui.login;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import main.java.gui.storage.storageMain;
 import main.java.login.Login;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MainUI {
 
-    public static void main(String[] args) {
-        FlatDarculaLaf.install();
+    public static Logger LOGGER = Logger.getLogger(MainUI.class.getName());
+
+    public static void main(String[] args) throws IOException {
+
+
+        FileHandler handler = new FileHandler("pm.log", true);
+        LOGGER.addHandler(handler);
+
+        FlatIntelliJLaf.install();
+
         JFrame frame = new JFrame("PASSWORD MANAGER");
         try {
             Login login = new Login();
-            if (login.isPasswordSet())
-            {
+            if (login.isPasswordSet()) {
                 startLoginFrame(frame);
-            }
-            else
-            {
+            } else {
                 startSetPassFrame(frame);
             }
 
@@ -31,41 +35,21 @@ public class MainUI {
             frame.pack();
             frame.setVisible(true);
             frame.setResizable(false);
-            frame.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                    storageMain storageGUI = new storageMain("test.encrypt");
-                    storageGUI.writeListPanel("test.encrypt");
-                    if (JOptionPane.showConfirmDialog(frame,
-                            "The passwords were saved!", "Success!",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-
-                    }
-                }
-            });
-
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            JOptionPane.showMessageDialog(frame, "Something went wrong... Email pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
 
         }
-
-
     }
 
-    private static void startLoginFrame(JFrame frame)
-    {
+    private static void startLoginFrame(JFrame frame){
         LoginUI loginUI = new LoginUI();
         frame.setContentPane(loginUI.getMainPanel());
         frame.getRootPane().setDefaultButton(loginUI.getLoginButton());
     }
 
-    private static void startSetPassFrame(JFrame frame)
-    {
+    private static void startSetPassFrame(JFrame frame){
         SetPassUI setPassUI = new SetPassUI();
         frame.setContentPane(setPassUI.getPassPanel());
         frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
