@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class Login {
 
-    private final static File LOGIN_FILE = new File("master.dat");
+    private final static File LOGIN_FILE = new File("pm.dat");
     private final static String DIGEST_ALGORITHM = "SHA-512";
     private final static String SALT = "my_mega_extra_salt";
     private final MessageDigest messageDigest;
@@ -46,47 +46,47 @@ public class Login {
         if (isPasswordSet()) {
             throw new PasswordExistsException("Password is already set");
         }
-
         FileOutputStream fos = new FileOutputStream(LOGIN_FILE);
         fos.write(calculatePasswordHash());
         fos.close();
     }
 
-    /**
-     * Deletes the master password file, to create a new one
-     *
-     * @return true or false if delete worked
-     */
-    public boolean resetPassword() throws IOException, PasswordExistsException {
-        if (!isPasswordSet())
-            throw new PasswordExistsException("Password is not set");
+//    /**
+//     * Deletes the master password file, to create a new one
+//     *
+//     * @return true or false if delete worked
+//     */
+//    public boolean resetPassword() throws IOException, PasswordExistsException {
+//        if (!isPasswordSet())
+//            throw new PasswordExistsException("Password is not set");
+//
+//        return LOGIN_FILE.delete();
+//    }
 
-        return LOGIN_FILE.delete();
+    /**
+     * Check if the master password file exists and contains a password
+     *
+     * @return true or false if exists
+     */
+    public boolean isPasswordSet() throws IOException {
+        byte[] masterPass = getHashedMasterPassword();
+        if (masterPass == null)
+            return false;
+        return masterPass.length == messageDigest.getDigestLength();
     }
 
-	/**
-	 * Check if the master password file exists and contains a password
-	 *
-	 * @return true or false if exists
-	 */
-	public boolean isPasswordSet() throws IOException {
-		byte[] masterPass = getHashedMasterPassword();
-		if (masterPass == null)
-			return false;
-		return masterPass.length == messageDigest.getDigestLength();
-	}
-
-	/**
-	 * Checks password to be at least six characters long, contain at least one letter and have at least one digit
-	 * @return true or false if password meets criteria
-	 */
-	public boolean checkPasswordStrength() {
-		return (password.length() >= 6) &&
-				(password.length() <= 20) &&
-				(password.matches(".*[A-Z]+.*")) &&
-				(password.matches(".*[a-z]+.*")) &&
-				(password.matches(".*[0-9]+.*"));
-	}
+    /**
+     * Checks password to be at least six characters long, contain at least one letter and have at least one digit
+     *
+     * @return true or false if password meets criteria
+     */
+    public boolean checkPasswordStrength() {
+        return (password.length() >= 6) &&
+                (password.length() <= 20) &&
+                (password.matches(".*[A-Z]+.*")) &&
+                (password.matches(".*[a-z]+.*")) &&
+                (password.matches(".*[0-9]+.*"));
+    }
 
     /**
      * Reads the content of the master password file

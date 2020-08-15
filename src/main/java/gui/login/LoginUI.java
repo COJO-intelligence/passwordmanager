@@ -8,29 +8,20 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-//TODO try catch here
-//TODO Finally for login
 public class LoginUI {
 
     private JPanel mainPanel;
-    private JLabel titleLabel;
     private JPasswordField passwordField;
-    private JLabel welcomeLabel;
-    private JLabel enterLabel;
     private JButton loginButton;
     private JLabel resultLabel;
     private JButton resetButton;
 
-    public LoginUI(){
+    public LoginUI() {
 
         loginButton.addActionListener(e -> {
             try {

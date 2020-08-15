@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class storageUI extends JFrame {
     private JButton addNewButton;
@@ -34,7 +32,6 @@ public class storageUI extends JFrame {
     final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
 
     public storageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
-
         if(dataOperations.isFilePresent()) {
             loadListPanel();
         } else {
@@ -99,6 +96,7 @@ public class storageUI extends JFrame {
                 defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
             }
             writeListPanel();
+            JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 
@@ -106,13 +104,12 @@ public class storageUI extends JFrame {
         return mainPanel;
     }
 
-    //TODO try catch
     public void writeListPanel() {
         try {
             dataOperations.writeDataListToFile();
         } catch (Exception exception) {
             MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
-            JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong... Email pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
             System.exit(2);
         }
     }

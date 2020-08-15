@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 public class FileOperations {
 
-    //TODO - Random IV -saved in key manager
-    private static final byte[] initialIV = {
+    private static final byte[] initialIV = new byte[]{
             0x01, 0x01, 0x01, 0x01,
             0x01, 0x01, 0x01, 0x01,
             0x01, 0x01, 0x01, 0x01,
@@ -23,6 +22,13 @@ public class FileOperations {
 
     private static final String filePath = "pm.enc";
 
+    /**
+     * Reads all entries from the file using an object input stream.
+     * Decryption is performed at runtime.
+     * To be used only from DataOperation class.
+     *
+     * @return the existing list of existing entries
+     */
     protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList()
             throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent()));
@@ -31,6 +37,13 @@ public class FileOperations {
         return dataList;
     }
 
+    /**
+     * Writes all entries into the file using and object output stream.
+     * Encryption is performed at runtime.
+     * To be used only from DataOperation class.
+     *
+     * @param dataList the list of entries
+     */
     protected static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList)
             throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -41,6 +54,12 @@ public class FileOperations {
         encryptContent(byteArrayOutputStream.toByteArray());
     }
 
+    /**
+     * Checks if the file is present or not.
+     * To be used only from DataOperation class.
+     *
+     * @return true or false if the file exists
+     */
     protected static boolean isFilePresent() {
         File file = new File(filePath);
         return file.exists();

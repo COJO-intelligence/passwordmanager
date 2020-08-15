@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class CredentialsElement implements Serializable {
 
-    private final int elementID;
     private static int elementCounter = 0;
+    private final int elementID;
     private String domain;
     private String link;
     private String username;
@@ -51,7 +51,7 @@ public class CredentialsElement implements Serializable {
     }
 
     public void setLink(String domain) {
-        this.link= domain;
+        this.link = domain;
     }
 
     public String getUsername() {

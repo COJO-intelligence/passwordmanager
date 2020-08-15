@@ -9,10 +9,9 @@ import java.util.Scanner;
 
 public class KeyManager {
     private static final String algorithmEncrypt = "AES";
-    private static final String keyStoreLocation = "keystore.p12";
+    private static final String keyStoreLocation = "pm.p12";
     private static final String keyName = "MainKey";
     private static final String randomSalt = "woa11A2@##";
-
 
     /**
      * Generates a pseudo random encryption key and stores it in a KeyStore
@@ -20,15 +19,11 @@ public class KeyManager {
     public static void setSecretKey() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(null, null);
-
         SecretKey key = generateSecretKey();
         char[] password = getHardwarePassword();
-
         KeyStore.SecretKeyEntry keyEntry = new KeyStore.SecretKeyEntry(key);
         KeyStore.PasswordProtection pp = new KeyStore.PasswordProtection(password);
-
         keyStore.setEntry(keyName, keyEntry, pp);
-
         keyStore.store(new FileOutputStream(keyStoreLocation), password);
     }
 
@@ -40,11 +35,9 @@ public class KeyManager {
     public static SecretKey getSecretKey() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, UnrecoverableEntryException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
-
         KeyStore.PasswordProtection pp = new KeyStore.PasswordProtection(password);
         keyStore.load(new FileInputStream(keyStoreLocation), password);
         KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(keyName, pp);
-
         return secretKeyEntry.getSecretKey();
     }
 
@@ -54,13 +47,11 @@ public class KeyManager {
     public static boolean isSecretKeySet() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
-
         File file = new File(keyStoreLocation);
         if (!file.exists()) {
             return false;
         }
         keyStore.load(new FileInputStream(keyStoreLocation), password);
-
         return keyStore.isKeyEntry(keyName);
     }
 
@@ -72,16 +63,13 @@ public class KeyManager {
     }
 
     private static char[] getHardwarePassword() throws IOException {
-
         String serial;
-
         String OSName = System.getProperty("os.name");
         if (OSName.contains("Windows")) {
             serial = getWindowsMotherboard_SerialNumber();
         } else {
             serial = GetLinuxMotherBoard_serialNumber();
         }
-
         String secret = randomSalt + serial;
         return secret.toCharArray();
     }
