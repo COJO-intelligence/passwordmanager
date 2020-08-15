@@ -34,9 +34,7 @@ public class SetPassUI {
                         resultLabel.setForeground(Color.red);
                     }
                 } catch (Exception exception) {
-                    MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
-                    JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(passPanel), "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
-                    System.exit(2);
+                    MainUI.treatError(exception, (JFrame) SwingUtilities.getWindowAncestor(passPanel), 3);
                 }
             } else {
                 resultLabel.setText("Passwords do not match!");
@@ -59,7 +57,6 @@ public class SetPassUI {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 storageGUI.writeListPanel();
-                JOptionPane.showMessageDialog(frame, "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);
             }
         });

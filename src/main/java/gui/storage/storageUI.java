@@ -107,9 +107,7 @@ public class storageUI extends JFrame {
         try {
             dataOperations.writeAllElementsIntoFile(dataOperations.getDataList());
         } catch (Exception exception) {
-            MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
-            JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
-            System.exit(2);
+            MainUI.treatError(exception, (JFrame) SwingUtilities.getWindowAncestor(mainPanel), 2);
         }
     }
 

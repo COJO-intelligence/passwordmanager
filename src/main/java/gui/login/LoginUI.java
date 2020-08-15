@@ -33,9 +33,7 @@ public class LoginUI {
                     resultLabel.setForeground(Color.red);
                 }
             } catch (Exception exception) {
-                MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
-                JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong... Email pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
-                System.exit(2);
+                MainUI.treatError(exception, (JFrame) SwingUtilities.getWindowAncestor(mainPanel), 4);
             }
         });
         resetButton.setVisible(false);
@@ -50,7 +48,6 @@ public class LoginUI {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 storageGUI.writeListPanel();
-                JOptionPane.showMessageDialog(frame, "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);
             }
         });

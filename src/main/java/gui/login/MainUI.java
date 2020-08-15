@@ -32,9 +32,7 @@ public class MainUI {
             frame.setVisible(true);
             frame.setResizable(false);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage());
-            JOptionPane.showMessageDialog(frame, "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+            treatError(e, frame, 1);
         }
     }
 
@@ -48,5 +46,12 @@ public class MainUI {
         SetPassUI setPassUI = new SetPassUI();
         frame.setContentPane(setPassUI.getPassPanel());
         frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
+    }
+
+    public static void treatError(Exception e, JFrame frame, int exitCode)
+    {
+        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        JOptionPane.showMessageDialog(frame, "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
+        System.exit(exitCode);
     }
 }
