@@ -52,7 +52,7 @@ public class SetPassUI {
                 "Hi!\n" +
                         "This is where you will store your passwords and all its related information.\n" +
                         "Enjoy our solution and don't forget to hit the SAVE button!\n" +
-                        "Please report any issues at gigi@gmail.com.", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
+                        "Please report any issues at cojo.intelligence@gmail.com.", "Welcome!", JOptionPane.INFORMATION_MESSAGE);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {

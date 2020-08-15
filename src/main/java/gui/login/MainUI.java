@@ -51,7 +51,7 @@ public class MainUI {
     public static void treatError(Exception e, JFrame frame, int exitCode)
     {
         LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        JOptionPane.showMessageDialog(frame, "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Something went wrong...\nPlease, send an email with the pm.log file at cojo.intelligence@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
         System.exit(exitCode);
     }
 }
