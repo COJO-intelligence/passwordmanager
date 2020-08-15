@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class storageUI extends JFrame {
+    final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+    private final DataOperations dataOperations = new DataOperations();
     private JButton addNewButton;
     private JButton saveButton;
     private JButton deleteButton;
@@ -28,11 +30,8 @@ public class storageUI extends JFrame {
     private JPanel elementPanel;
     private JTextField linkTextField;
 
-    private final DataOperations dataOperations = new DataOperations();
-    final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-
     public storageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
-        if(dataOperations.isFilePresent()) {
+        if (dataOperations.isFilePresent()) {
             loadListPanel();
         } else {
             firstAppBoot();
@@ -44,7 +43,7 @@ public class storageUI extends JFrame {
         list.addListSelectionListener(e -> {
             saveButton.setEnabled(true);
             deleteButton.setEnabled(true);
-            if(!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
+            if (!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
                 elementPanel.setVisible(true);
                 domainTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDomain());
                 linkTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getLink());
@@ -65,7 +64,7 @@ public class storageUI extends JFrame {
         deleteButton.setEnabled(false);
         deleteButton.addActionListener(e -> {
             int index = list.getSelectedIndex();
-            if(index >= 0) {
+            if (index >= 0) {
                 elementPanel.setVisible(false);
                 domainTextField.setText("");
                 usernameTextField.setText("");
@@ -77,7 +76,7 @@ public class storageUI extends JFrame {
             }
             deleteButton.setEnabled(false);
             saveButton.setEnabled(false);
-            if(index == 0 || index <= list.getLastVisibleIndex()){
+            if (index == 0 || index <= list.getLastVisibleIndex()) {
                 list.setSelectedIndex(index);
             } else {
                 list.setSelectedIndex(index - 1);
@@ -92,7 +91,7 @@ public class storageUI extends JFrame {
             dataOperations.getDataList().get(list.getSelectedIndex()).setEmail(emailTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setPassword(passwordTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setAdditionalComments(additionalCommentsTextField.getText());
-            if(!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
+            if (!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
                 defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
             }
             writeListPanel();
@@ -106,7 +105,7 @@ public class storageUI extends JFrame {
 
     public void writeListPanel() {
         try {
-            dataOperations.writeDataListToFile();
+            dataOperations.writeAllElementsIntoFile(dataOperations.getDataList());
         } catch (Exception exception) {
             MainUI.LOGGER.log(Level.SEVERE, exception.getMessage());
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(mainPanel), "Something went wrong...\nPlease, send an email with the pm.log file at gigi@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
@@ -124,7 +123,7 @@ public class storageUI extends JFrame {
     }
 
     private void loadListPanel() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KeyStoreException, ClassNotFoundException {
-        dataOperations.loadDataListToDataOperationsObject();
+        dataOperations.setDataList(dataOperations.loadAllElementsIntoArrayList());
         for (CredentialsElement credentialsElement : dataOperations.getDataList()) {
             defaultListModel.addElement(credentialsElement.getDomain());
         }

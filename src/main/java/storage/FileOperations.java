@@ -22,49 +22,6 @@ public class FileOperations {
 
     private static final String filePath = "pm.enc";
 
-    /**
-     * Reads all entries from the file using an object input stream.
-     * Decryption is performed at runtime.
-     * To be used only from DataOperation class.
-     *
-     * @return the existing list of existing entries
-     */
-    protected static ArrayList<CredentialsElement> loadAllElementsIntoArrayList()
-            throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent()));
-        ArrayList<CredentialsElement> dataList = (ArrayList<CredentialsElement>) objectInputStream.readObject();
-        objectInputStream.close();
-        return dataList;
-    }
-
-    /**
-     * Writes all entries into the file using and object output stream.
-     * Encryption is performed at runtime.
-     * To be used only from DataOperation class.
-     *
-     * @param dataList the list of entries
-     */
-    protected static void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList)
-            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(dataList);
-        objectOutputStream.flush();
-        objectOutputStream.close();
-        encryptContent(byteArrayOutputStream.toByteArray());
-    }
-
-    /**
-     * Checks if the file is present or not.
-     * To be used only from DataOperation class.
-     *
-     * @return true or false if the file exists
-     */
-    protected static boolean isFilePresent() {
-        File file = new File(filePath);
-        return file.exists();
-    }
-
     private static byte[] decryptContent()
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -88,6 +45,49 @@ public class FileOperations {
         fos.write(cipher.doFinal(inputByteArray));
         fos.flush();
         fos.close();
+    }
+
+    /**
+     * Reads all entries from the file using an object input stream.
+     * Decryption is performed at runtime.
+     * To be used only from DataOperation class.
+     *
+     * @return the existing list of entries
+     */
+    public ArrayList<CredentialsElement> loadAllElementsIntoArrayList()
+            throws IOException, ClassNotFoundException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(decryptContent()));
+        ArrayList<CredentialsElement> dataList = (ArrayList<CredentialsElement>) objectInputStream.readObject();
+        objectInputStream.close();
+        return dataList;
+    }
+
+    /**
+     * Writes all entries into the file using and object output stream.
+     * Encryption is performed at runtime.
+     * To be used only from DataOperation class.
+     *
+     * @param dataList the list of entries
+     */
+    public void writeAllElementsIntoFile(ArrayList<CredentialsElement> dataList)
+            throws IOException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidAlgorithmParameterException, CertificateException, KeyStoreException, UnrecoverableEntryException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(dataList);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        encryptContent(byteArrayOutputStream.toByteArray());
+    }
+
+    /**
+     * Checks if the file is present or not.
+     * To be used only from DataOperation class.
+     *
+     * @return true or false if the file exists
+     */
+    public boolean isFilePresent() {
+        File file = new File(filePath);
+        return file.exists();
     }
 
 }
