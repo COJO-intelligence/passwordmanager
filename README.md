@@ -5,18 +5,20 @@ Presenting to the world a solution for a basic password manager built using Orac
 * Java SE Runtime Environment 8 - Minimum Requirement;
 * Java added to System PATH.
 
-**Note:** Development was made on Java SE Development Kit 14.0.2, but the application was tested on Java SE Runtime Environment 8.
+**Note:** Development was made on Java SE Development Kit 14.0.1, but the application was tested on Java SE Runtime Environment 8.
 
-**Why Java?** To be able to run the application with no trouble on whatever operation system is provided. No matter if it is Windows, Linux or macOS machine.
+**Why Java?** To be able to run the application with no trouble on whatever operation system is provided. No matter if it is Windows or Linux machines.
 
 ### Usage
-* Download the passwordManager.jar file located in the *production* package;
+* Download the passwordManager.jar file located in the *app* package;
 * Open the System Terminal and navigate to the location of the JAR;
 * Run the below command:
 ```
 java -jar passwordManager.jar
 ```
 
+Alternatively, you can run the application by double clicking on the JAR file.
+ 
 **Quick Debug:** If the command did not launch the application, please make sure java is installed and added to PATH by running one of the following commands:
 ```
 java -version
@@ -28,17 +30,29 @@ Java(TM) SE Runtime Environment (build 14.0.1+7)
 Java HotSpot(TM) 64-Bit Server VM (build 14.0.1+7, mixed mode, sharing)
 ```
 
+**Note:** For importing the source code into an IDE without any errors, please add the external JAR **flatlaf-0.38.jar** into your project. The JAR is located into the *src\main\resources* package.
+
 ### Explaining the Project Structure
-The project is divided into two main ideas which are the *Login Page* and the *Entries Page*. Only the master key is required to access all the entries. 
+The project is divided into two main ideas which are the *Login Page* and the *Entries Page*. Only the master key is required to access all the entries. The Password Manager works alongside 4 files: 
+1. **pm.enc** - The main file which contains all the password inputs and all its related information. The file is always encrypted. Only the content is decrypted at runtime in order to display the values;
+1. **pm.dat** - This file contains the SHA-512 hash of the master password combined with a couple of salts. This password is used only to login in the app;
+1. **pm.p12** - This file is the keystore that contains the master key used for encrypting and decrypting; 
+1. **pm.log** - The log file which we require you to send in order to debug a certain crash situation or malfunction. Please note that we do not collect any information about the system;
+
+All these files are created at runtime and updated properly. Also, their location is identical to the JAR file's path.
+
+**Note:** We currently are aware of a situation in which running the app on a LINUX system will create the files in the power working directory path instead of the JAR's location. This applies especially when running the app by double clicking the JAR instead of launching from terminal.
+
+**Very Important!** Current version does not provide a way to reset the main password. We strongly recommend to not forget it. If such a situation occurs, or you simply want to reset the app, delete all the 4 files described above. Be aware that such an action will erase all previously added entries!
+
 Here is a list of the main algorithms and best practice logic used inside the application:
-1. *SHA-512* with salts;
+1. *SHA-512* with salts - used for hashing;
     ```java
     MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
     String finalPassword = SALT + password + SALT;
     return messageDigest.digest(finalPassword.getBytes());
     ```
-1. *AES* in CBC Mode;
-1. *PKCS5Padding*;
+1. *AES* in *CBC* Mode with *PKCS5Padding* - used for cryptographic operations;
     ```java
     Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
     SecretKey secretKey = KeyManager.getSecretKey();
@@ -52,19 +66,25 @@ Here is a list of the main algorithms and best practice logic used inside the ap
     objectInputStream.close();
     return dataList;
     ```
-1. Do not forget the master key! - No *reset password* functionality is provided;
-1. The key is stored using a *Java KeyStore Manager*.
+   
+1. The key is generated and stored using *Java KeyStore Manager*.
+    ```java
+    KeyGenerator keyGen = KeyGenerator.getInstance(algorithmEncrypt);
+    SecureRandom secRandom = new SecureRandom();
+    keyGen.init(secRandom);
+    return keyGen.generateKey();
+    ```
 
 ### Contributing
-Please report any issues by opening a ticket to discuss what you would like to fix or to implement.
-We provide full access to the code - there is nothing to hide.
+Please report any issues by sending an email to cojo.intelligence@gmail.com or by opening a ticket to discuss what you would like to fix or to implement.
+We provide full access to the code, even for the GUI/GUX - there is nothing to hide.
 
 ### Future Plans
-The plan is to further extend the password manager idea into a browser extension, or maybe a fully functional web application. Check the repository for further updates.
+For short term, the plan is to further extend the password manager idea into a browser extension, or maybe a fully functional web application. For long term, we aim to provide a full cloud password manager solution, including mobile devices.
+
+Check the repository for further updates.
 
 ### Contact
-We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects.
-
-For any observations, comments, proposals, ideas or just some simple thoughts please contact us on our git page.
+We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some simple thoughts please contact us at cojo.intelligence@gmail.com or on our git page.
 
 One project at a time... 
