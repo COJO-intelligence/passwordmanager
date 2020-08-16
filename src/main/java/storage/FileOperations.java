@@ -6,6 +6,7 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -20,7 +21,8 @@ public class FileOperations {
             0x01, 0x01, 0x01, 0x01
     };
 
-    private static final String filePath = "pm.enc";
+    public static String directoryPath;
+    private static Path filePath = null;
 
     private static byte[] decryptContent()
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
@@ -28,13 +30,13 @@ public class FileOperations {
         SecretKey secretKey = KeyManager.getSecretKey();
         IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-        byte[] encryptedContent = Files.readAllBytes(Paths.get(filePath));
+        byte[] encryptedContent = Files.readAllBytes(filePath);
         return cipher.doFinal(encryptedContent);
     }
 
     private static void encryptContent(byte[] inputByteArray)
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        FileOutputStream fos = new FileOutputStream(filePath);
+        FileOutputStream fos = new FileOutputStream(String.valueOf(filePath));
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         if (!KeyManager.isSecretKeySet()) {
             KeyManager.setSecretKey();
@@ -86,8 +88,20 @@ public class FileOperations {
      * @return true or false if the file exists
      */
     public boolean isFilePresent() {
-        File file = new File(filePath);
+        File file = new File(String.valueOf(filePath));
         return file.exists();
+    }
+
+    public static void startUserDirectory() throws IOException {
+        String homeDir = System.getProperty("user.home");
+        Path path = Paths.get(homeDir, "PMCojoFiles");
+        directoryPath = String.valueOf(path);
+        File dir = new File(directoryPath);
+        filePath = Paths.get(directoryPath, "pm.enc");
+        if (!(dir.exists() || dir.isDirectory())) {
+            Files.createDirectories(path);
+        }
+
     }
 
 }

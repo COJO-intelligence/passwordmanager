@@ -1,15 +1,20 @@
 package main.java.manager;
 
+import main.java.storage.FileOperations;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Scanner;
 
 public class KeyManager {
     private static final String algorithmEncrypt = "AES";
-    private static final String keyStoreLocation = "pm.p12";
+    private static final Path keyStorePath = Paths.get(FileOperations.directoryPath, "pm.p12");
     private static final String keyName = "MainKey";
     private static final String randomSalt = "woa11A2@##";
 
@@ -24,7 +29,7 @@ public class KeyManager {
         KeyStore.SecretKeyEntry keyEntry = new KeyStore.SecretKeyEntry(key);
         KeyStore.PasswordProtection pp = new KeyStore.PasswordProtection(password);
         keyStore.setEntry(keyName, keyEntry, pp);
-        keyStore.store(new FileOutputStream(keyStoreLocation), password);
+        keyStore.store(new FileOutputStream(String.valueOf(keyStorePath)), password);
     }
 
     /**
@@ -36,7 +41,7 @@ public class KeyManager {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
         KeyStore.PasswordProtection pp = new KeyStore.PasswordProtection(password);
-        keyStore.load(new FileInputStream(keyStoreLocation), password);
+        keyStore.load(new FileInputStream(String.valueOf(keyStorePath)), password);
         KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(keyName, pp);
         return secretKeyEntry.getSecretKey();
     }
@@ -47,11 +52,11 @@ public class KeyManager {
     public static boolean isSecretKeySet() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
-        File file = new File(keyStoreLocation);
-        if (!file.exists()) {
+        if (!Files.isRegularFile(keyStorePath)) {
+            System.out.println("Nu exista keystore");
             return false;
         }
-        keyStore.load(new FileInputStream(keyStoreLocation), password);
+        keyStore.load(new FileInputStream(String.valueOf(keyStorePath)), password);
         return keyStore.isKeyEntry(keyName);
     }
 

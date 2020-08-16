@@ -1,9 +1,12 @@
 package main.java.login;
 
+import main.java.storage.FileOperations;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +14,7 @@ import java.util.Arrays;
 
 public class Login {
 
-    private final static File LOGIN_FILE = new File("pm.dat");
+    private static final Path filePath = Paths.get(FileOperations.directoryPath, "pm.dat");
     private final static String DIGEST_ALGORITHM = "SHA-512";
     private final static String SALT = "my_mega_extra_salt";
     private final MessageDigest messageDigest;
@@ -46,7 +49,7 @@ public class Login {
         if (isPasswordSet()) {
             throw new PasswordExistsException("Password is already set");
         }
-        FileOutputStream fos = new FileOutputStream(LOGIN_FILE);
+        FileOutputStream fos = new FileOutputStream(String.valueOf(filePath));
         fos.write(calculatePasswordHash());
         fos.close();
     }
@@ -94,8 +97,8 @@ public class Login {
      * @return byte[] hashed password from master file or null
      */
     private byte[] getHashedMasterPassword() throws IOException {
-        if (LOGIN_FILE.exists()) {
-            return Files.readAllBytes(Paths.get(LOGIN_FILE.getPath()));
+        if (Files.isRegularFile(filePath)) {
+            return Files.readAllBytes(filePath);
         }
         return null;
     }

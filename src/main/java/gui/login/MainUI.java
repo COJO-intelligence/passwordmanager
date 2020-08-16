@@ -2,9 +2,12 @@ package main.java.gui.login;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import main.java.login.Login;
+import main.java.storage.FileOperations;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +18,9 @@ public class MainUI {
     public static Logger LOGGER = Logger.getLogger(MainUI.class.getName());
 
     public static void main(String[] args) throws IOException {
-        FileHandler handler = new FileHandler("pm.log", true);
+        FileOperations.startUserDirectory();
+        Path logPath = Paths.get(FileOperations.directoryPath, "pm.log");
+        FileHandler handler = new FileHandler(String.valueOf(logPath), true);
         LOGGER.addHandler(handler);
         FlatDarculaLaf.install();
         JFrame frame = new JFrame("PASSWORD MANAGER");
