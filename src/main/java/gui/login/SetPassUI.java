@@ -1,6 +1,7 @@
 package main.java.gui.login;
 
-import main.java.gui.storage.storageUI;
+import main.java.MainUI;
+import main.java.gui.storage.StorageUI;
 import main.java.login.Login;
 
 import javax.crypto.BadPaddingException;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
-import java.util.logging.Level;
 
 public class SetPassUI {
     private JPasswordField passwordField;
@@ -45,7 +45,7 @@ public class SetPassUI {
 
     private void changeContent() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(passPanel);
-        storageUI storageGUI = new storageUI();
+        StorageUI storageGUI = new StorageUI();
         frame.setContentPane(storageGUI.getMainPanel());
         frame.revalidate();
         JOptionPane.showMessageDialog(frame,

@@ -1,6 +1,8 @@
-package main.java.gui.login;
+package main.java;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import main.java.gui.login.LoginUI;
+import main.java.gui.login.SetPassUI;
 import main.java.login.Login;
 import main.java.storage.FileOperations;
 
@@ -53,8 +55,7 @@ public class MainUI {
         frame.getRootPane().setDefaultButton(setPassUI.getLoginButton());
     }
 
-    public static void treatError(Exception e, JFrame frame, int exitCode)
-    {
+    public static void treatError(Exception e, JFrame frame, int exitCode) {
         LOGGER.log(Level.SEVERE, e.getMessage(), e);
         JOptionPane.showMessageDialog(frame, "Something went wrong...\nPlease, send an email with the pm.log file at cojo.intelligence@gmail.com", "FATAL ERROR!", JOptionPane.ERROR_MESSAGE);
         System.exit(exitCode);

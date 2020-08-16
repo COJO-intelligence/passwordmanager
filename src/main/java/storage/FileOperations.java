@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class FileOperations {
 
     private static final byte[] initialIV = new byte[]{
-            0x01, 0x01, 0x01, 0x01,
-            0x01, 0x01, 0x01, 0x01,
-            0x01, 0x01, 0x01, 0x01,
-            0x01, 0x01, 0x01, 0x01
+            0x01, 0x02, 0x03, 0x04,
+            0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C,
+            0x0D, 0x0E, 0x0D, 0x0F
     };
 
     public static String directoryPath;
@@ -47,6 +47,20 @@ public class FileOperations {
         fos.write(cipher.doFinal(inputByteArray));
         fos.flush();
         fos.close();
+    }
+
+    /**
+     * Creates the main folder of the application if not existing already
+     */
+    public static void startUserDirectory() throws IOException {
+        String homeDir = System.getProperty("user.home");
+        Path path = Paths.get(homeDir, "PMCojoFiles");
+        directoryPath = String.valueOf(path);
+        File dir = new File(directoryPath);
+        filePath = Paths.get(directoryPath, "pm.enc");
+        if (!(dir.exists() || dir.isDirectory())) {
+            Files.createDirectories(path);
+        }
     }
 
     /**
@@ -90,18 +104,6 @@ public class FileOperations {
     public boolean isFilePresent() {
         File file = new File(String.valueOf(filePath));
         return file.exists();
-    }
-
-    public static void startUserDirectory() throws IOException {
-        String homeDir = System.getProperty("user.home");
-        Path path = Paths.get(homeDir, "PMCojoFiles");
-        directoryPath = String.valueOf(path);
-        File dir = new File(directoryPath);
-        filePath = Paths.get(directoryPath, "pm.enc");
-        if (!(dir.exists() || dir.isDirectory())) {
-            Files.createDirectories(path);
-        }
-
     }
 
 }

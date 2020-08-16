@@ -1,6 +1,6 @@
 package main.java.gui.storage;
 
-import main.java.gui.login.MainUI;
+import main.java.MainUI;
 import main.java.storage.CredentialsElement;
 import main.java.storage.DataOperations;
 
@@ -12,9 +12,8 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
-public class storageUI extends JFrame {
+public class StorageUI extends JFrame {
     final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
     private final DataOperations dataOperations = new DataOperations();
     private JButton addNewButton;
@@ -30,7 +29,7 @@ public class storageUI extends JFrame {
     private JPanel elementPanel;
     private JTextField linkTextField;
 
-    public storageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
+    public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
             loadListPanel();
         } else {
@@ -58,7 +57,7 @@ public class storageUI extends JFrame {
             CredentialsElement credentialsElement = new CredentialsElement();
             dataOperations.addNewElement(credentialsElement);
             defaultListModel.addElement(credentialsElement.getDomain());
-            list.setSelectedIndex(list.getSelectedIndex() + 1);
+            list.setSelectedIndex(list.getLastVisibleIndex());
         });
 
         deleteButton.setEnabled(false);

@@ -5,7 +5,7 @@ Presenting to the world a solution for a basic password manager built using Orac
 * Java SE Runtime Environment 8 - Minimum Requirement;
 * Java added to System PATH.
 
-**Note:** Development was made on Java SE Development Kit 14.0.1, but the application was tested on Java SE Runtime Environment 8.
+**Note:** Development was made on Java SE Development Kit 14.0.1, but the application was tested on Java SE Runtime Environment 8 as well.
 
 **Why Java?** To be able to run the application with no trouble on whatever operation system is provided. No matter if it is Windows or Linux machines.
 
@@ -22,6 +22,7 @@ Alternatively, you can run the application by double clicking on the JAR file.
 **Quick Debug:** If the command did not launch the application, please make sure java is installed and added to PATH by running one of the following commands:
 ```
 java -version
+javac -version
 ```
 which will output something similar to the following:
 ```
@@ -30,7 +31,7 @@ Java(TM) SE Runtime Environment (build 14.0.1+7)
 Java HotSpot(TM) 64-Bit Server VM (build 14.0.1+7, mixed mode, sharing)
 ```
 
-**Note:** For importing the source code into an IDE without any errors, please add the external JAR **flatlaf-0.38.jar** into your project. The JAR is located into the *src\main\resources* package.
+**Note:** For importing the source code into an IDE and compile it without any errors, please add the external JAR **flatlaf-0.38.jar** into your project. The JAR is located into the *src\main\resources* package.
 
 ### Explaining the Project Structure
 The project is divided into two main ideas which are the *Login Page* and the *Entries Page*. Only the master key is required to access all the entries. The Password Manager works alongside 4 files: 
@@ -39,9 +40,7 @@ The project is divided into two main ideas which are the *Login Page* and the *E
 1. **pm.p12** - This file is the keystore that contains the master key used for encrypting and decrypting; 
 1. **pm.log** - The log file which we require you to send in order to debug a certain crash situation or malfunction. Please note that we do not collect any information about the system;
 
-All these files are created at runtime and updated properly. Also, their location is identical to the JAR file's path.
-
-**Note:** We currently are aware of a situation in which running the app on a LINUX system will create the files in the power working directory path instead of the JAR's location. This applies especially when running the app by double clicking the JAR instead of launching from terminal.
+All these files are created at runtime and updated properly. Also, their location is set to the user's home directory path (under the directory PMCojoFiles).
 
 **Very Important!** Current version does not provide a way to reset the main password. We strongly recommend to not forget it. If such a situation occurs, or you simply want to reset the app, delete all the 4 files described above. Be aware that such an action will erase all previously added entries!
 
@@ -80,11 +79,11 @@ Please report any issues by sending an email to cojo.intelligence@gmail.com or b
 We provide full access to the code, even for the GUI/GUX - there is nothing to hide.
 
 ### Future Plans
-For short term, the plan is to further extend the password manager idea into a browser extension, or maybe a fully functional web application. For long term, we aim to provide a full cloud password manager solution, including mobile devices.
+For short term, the plan is to further extend the password manager idea into a browser extension, or maybe a web application. For long term, we aim to provide a full cloud password manager solution, including coverage over mobile devices.
 
 Check the repository for further updates.
 
 ### Contact
-We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some simple thoughts please contact us at cojo.intelligence@gmail.com or on our git page.
+We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com or on our git page.
 
 One project at a time... 

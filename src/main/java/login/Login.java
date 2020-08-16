@@ -2,7 +2,6 @@ package main.java.login;
 
 import main.java.storage.FileOperations;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;

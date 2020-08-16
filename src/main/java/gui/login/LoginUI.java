@@ -1,6 +1,7 @@
 package main.java.gui.login;
 
-import main.java.gui.storage.storageUI;
+import main.java.MainUI;
+import main.java.gui.storage.StorageUI;
 import main.java.login.Login;
 
 import javax.crypto.BadPaddingException;
@@ -11,7 +12,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.logging.Level;
 
 public class LoginUI {
 
@@ -22,7 +22,6 @@ public class LoginUI {
     private JButton resetButton;
 
     public LoginUI() {
-
         loginButton.addActionListener(e -> {
             try {
                 Login login = new Login(new String(passwordField.getPassword()));
@@ -41,7 +40,7 @@ public class LoginUI {
 
     private void changeContent() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        storageUI storageGUI = new storageUI();
+        StorageUI storageGUI = new StorageUI();
         frame.setContentPane(storageGUI.getMainPanel());
         frame.revalidate();
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
