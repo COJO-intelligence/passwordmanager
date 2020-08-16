@@ -75,7 +75,7 @@ Here is a list of the main algorithms and best practice logic used inside the ap
     ```
 
 ### Contributing
-Please report any issues by sending an email to cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/Pw4XH3) or by opening a ticket on our git page to discuss what you would like to fix or to implement.
+Please report any issues by sending an email to cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or by opening a ticket on our git page to discuss what you would like to fix or to implement.
 We provide full access to the code, even for the GUI/GUX - there is nothing to hide.
 
 ### Future Plans
@@ -84,6 +84,6 @@ For short term, the plan is to further extend the password manager idea into a b
 Check the repository for further updates.
 
 ### Contact
-We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/Pw4XH3) or on our git page.
+We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or on our git page.
 
 One project at a time... 
