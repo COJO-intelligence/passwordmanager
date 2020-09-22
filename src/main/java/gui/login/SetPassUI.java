@@ -25,7 +25,7 @@ public class SetPassUI {
         loginButton.addActionListener(e -> {
             if (Arrays.equals(passwordField.getPassword(), passwordFieldConf.getPassword())) {
                 try {
-                    Login login = new Login(new String(passwordField.getPassword()));
+                    Login login = new Login(passwordField.getPassword());
                     if (login.checkPasswordStrength()) {
                         login.setUserPassword();
                         changeContent();
