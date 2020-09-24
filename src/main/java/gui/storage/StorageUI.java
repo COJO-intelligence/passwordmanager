@@ -8,7 +8,14 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -96,8 +103,25 @@ public class StorageUI extends JFrame {
             writeListPanel();
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         });
-    }
 
+        linkTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (Desktop.isDesktopSupported())
+                {
+                    try {
+                        Desktop desktop = java.awt.Desktop.getDesktop();
+                        URI uri = new URI(linkTextField.getText());
+                        if (uri.isAbsolute()) {
+                            desktop.browse(uri);
+                        }
+                    } catch (URISyntaxException | IOException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
     public JPanel getMainPanel() {
         return mainPanel;
     }
