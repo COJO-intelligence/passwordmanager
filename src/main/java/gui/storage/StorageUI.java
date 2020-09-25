@@ -36,6 +36,7 @@ public class StorageUI extends JFrame {
     private JTextField dateCreatedTextField;
     private JTextField dateModifiedTextField;
     private JComboBox<String> accountTypeComboBox;
+    private JCheckBox deactivatedCheckBox;
 
     public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
@@ -68,6 +69,7 @@ public class StorageUI extends JFrame {
                 dateCreatedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateCreatedString());
                 dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
                 additionalCommentsTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getAdditionalComments());
+                deactivatedCheckBox.setSelected(dataOperations.getDataList().get(list.getSelectedIndex()).isDeactivated());
             }
         });
 
@@ -91,6 +93,7 @@ public class StorageUI extends JFrame {
                 dateCreatedTextField.setText("");
                 dateModifiedTextField.setText("");
                 additionalCommentsTextField.setText("");
+                deactivatedCheckBox.setSelected(false);
                 defaultListModel.removeElementAt(index);
                 dataOperations.getDataList().remove(index);
             }
@@ -113,6 +116,7 @@ public class StorageUI extends JFrame {
             dataOperations.getDataList().get(list.getSelectedIndex()).setPassword(passwordTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setDateModifiedString();
             dataOperations.getDataList().get(list.getSelectedIndex()).setAdditionalComments(additionalCommentsTextField.getText());
+            dataOperations.getDataList().get(list.getSelectedIndex()).setDeactivated(deactivatedCheckBox.isSelected());
             if (!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
                 defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
             }

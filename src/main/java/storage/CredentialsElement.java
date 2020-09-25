@@ -14,9 +14,10 @@ public class CredentialsElement implements Serializable {
     private String username;
     private String email;
     private String password;
-    private String additionalComments;
     private final String dateCreatedString;
     private String dateModifiedString;
+    private String additionalComments;
+    private boolean isDeactivated;
 
     public static String dateFormat = "EEEE, dd MMMM yyyy hh:mm:ss";
 
@@ -34,6 +35,7 @@ public class CredentialsElement implements Serializable {
         SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
         this.dateCreatedString = DateFor.format(date);
         this.dateModifiedString = DateFor.format(date);
+        isDeactivated = false;
     }
 
     public CredentialsElement() {
@@ -49,6 +51,7 @@ public class CredentialsElement implements Serializable {
         SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
         this.dateCreatedString = DateFor.format(date);
         this.dateModifiedString = DateFor.format(date);
+        isDeactivated = false;
     }
 
     public int getElementID() {
@@ -125,4 +128,11 @@ public class CredentialsElement implements Serializable {
         this.accountType = accountType;
     }
 
+    public boolean isDeactivated() {
+        return isDeactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        isDeactivated = deactivated;
+    }
 }
