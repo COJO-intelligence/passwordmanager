@@ -1,6 +1,16 @@
 ## Java Password Manager
 Presenting to the world a solution for a basic password manager built using Oracle's java security framework and enhanced with Swing-like user interface.
 
+##Version 2.0.0 Released
+Implemented new features and improved previous build:
+* New entries aiming to improve the quality of the stored information (Account Type, Date Created, Date Modified and "Deactivated?" checkbox);
+* New utility feature in the form of a random password generator;
+* Inactivity for 15 minutes will lock the application;
+* Various security improvements (Key derivation function for the login, Main password type switch from String to CharArray, Data tampering method in a form of a HMAC).
+
+**Warning!** Due to major modifications and additions in this version, files created with version 1.0.0 are not compatible with this version
+
+##Version 1.0.0
 ### Prerequisites
 * Java SE Runtime Environment 8 - Minimum Requirement;
 * Java added to System PATH.
