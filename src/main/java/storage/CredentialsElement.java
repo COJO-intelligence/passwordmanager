@@ -1,6 +1,8 @@
 package main.java.storage;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CredentialsElement implements Serializable {
 
@@ -12,6 +14,10 @@ public class CredentialsElement implements Serializable {
     private String email;
     private String password;
     private String additionalComments;
+    private String dateCreatedString;
+    private String dateModifiedString;
+
+    public static String dateFormat = "EEEE, dd MMMM yyyy hh:mm:ss";
 
     public CredentialsElement(String domain, String link, String username, String email, String password, String additionalComments) {
         elementCounter++;
@@ -22,6 +28,10 @@ public class CredentialsElement implements Serializable {
         this.email = email;
         this.password = password;
         this.additionalComments = additionalComments;
+        Date date = new Date();
+        SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
+        this.dateCreatedString = DateFor.format(date);
+        this.dateModifiedString = DateFor.format(date);
     }
 
     public CredentialsElement() {
@@ -32,6 +42,10 @@ public class CredentialsElement implements Serializable {
         this.email = null;
         this.password = null;
         this.additionalComments = null;
+        Date date = new Date();
+        SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
+        this.dateCreatedString = DateFor.format(date);
+        this.dateModifiedString = DateFor.format(date);
     }
 
     public int getElementID() {
@@ -86,4 +100,23 @@ public class CredentialsElement implements Serializable {
         this.additionalComments = additionalComments;
     }
 
+    public String getDateCreatedString() {
+        return dateCreatedString;
+    }
+
+    public void setDateCreatedString() {
+        Date date = new Date();
+        SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
+        this.dateCreatedString = DateFor.format(date);
+    }
+
+    public String getDateModifiedString() {
+        return dateModifiedString;
+    }
+
+    public void setDateModifiedString() {
+        Date date = new Date();
+        SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
+        this.dateModifiedString = DateFor.format(date);
+    }
 }

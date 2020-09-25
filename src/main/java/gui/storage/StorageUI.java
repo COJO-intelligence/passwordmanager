@@ -12,10 +12,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -35,6 +33,9 @@ public class StorageUI extends JFrame {
     private JPanel mainPanel;
     private JPanel elementPanel;
     private JTextField linkTextField;
+    private JTextField dateCreatedTextField;
+    private JTextField dateModifiedTextField;
+    private JComboBox accountTypeComboBox;
 
     public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
@@ -46,6 +47,10 @@ public class StorageUI extends JFrame {
 
         list.setModel(defaultListModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        dateCreatedTextField.setEditable(false);
+        dateModifiedTextField.setEditable(false);
+        //accountTypeComboBox.add();
+
         list.addListSelectionListener(e -> {
             saveButton.setEnabled(true);
             deleteButton.setEnabled(true);
@@ -56,6 +61,8 @@ public class StorageUI extends JFrame {
                 usernameTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getUsername());
                 emailTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getEmail());
                 passwordTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getPassword());
+                dateCreatedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateCreatedString());
+                dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
                 additionalCommentsTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getAdditionalComments());
             }
         });
@@ -76,6 +83,8 @@ public class StorageUI extends JFrame {
                 usernameTextField.setText("");
                 emailTextField.setText("");
                 passwordTextField.setText("");
+                dateCreatedTextField.setText("");
+                dateModifiedTextField.setText("");
                 additionalCommentsTextField.setText("");
                 defaultListModel.removeElementAt(index);
                 dataOperations.getDataList().remove(index);
@@ -96,10 +105,12 @@ public class StorageUI extends JFrame {
             dataOperations.getDataList().get(list.getSelectedIndex()).setUsername(usernameTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setEmail(emailTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setPassword(passwordTextField.getText());
+            dataOperations.getDataList().get(list.getSelectedIndex()).setDateModifiedString();
             dataOperations.getDataList().get(list.getSelectedIndex()).setAdditionalComments(additionalCommentsTextField.getText());
             if (!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
                 defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
             }
+            dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
             writeListPanel();
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         });
