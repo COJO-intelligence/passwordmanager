@@ -16,6 +16,14 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+/*
+Algoritm pentru Authenticated Encryption --> https://proandroiddev.com/security-best-practices-symmetric-encryption-with-aes-in-java-and-android-part-2-b3b80e99ad36
+    1. Enc then MAC
+    2. KeyManager sa dea a doua cheie -> pt MAC
+    3. Salvat ciphertext sub forma IV + MAC + CIPHER in acelasi fisier
+    4. Random pe IV
+ */
+
 public class Login {
 
     private static final Path filePath = Paths.get(FileOperations.directoryPath, "pm.dat");
