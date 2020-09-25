@@ -8,20 +8,22 @@ public class CredentialsElement implements Serializable {
 
     private static int elementCounter = 0;
     private final int elementID;
+    private int accountType;
     private String domain;
     private String link;
     private String username;
     private String email;
     private String password;
     private String additionalComments;
-    private String dateCreatedString;
+    private final String dateCreatedString;
     private String dateModifiedString;
 
     public static String dateFormat = "EEEE, dd MMMM yyyy hh:mm:ss";
 
-    public CredentialsElement(String domain, String link, String username, String email, String password, String additionalComments) {
+    public CredentialsElement(int accountType, String domain, String link, String username, String email, String password, String additionalComments) {
         elementCounter++;
         this.elementID = elementCounter;
+        this.accountType = accountType;
         this.domain = domain;
         this.link = link;
         this.username = username;
@@ -38,6 +40,7 @@ public class CredentialsElement implements Serializable {
         elementCounter++;
         this.elementID = elementCounter;
         this.domain = "New Entry " + getElementID();
+        this.accountType = 9;
         this.username = null;
         this.email = null;
         this.password = null;
@@ -104,12 +107,6 @@ public class CredentialsElement implements Serializable {
         return dateCreatedString;
     }
 
-    public void setDateCreatedString() {
-        Date date = new Date();
-        SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
-        this.dateCreatedString = DateFor.format(date);
-    }
-
     public String getDateModifiedString() {
         return dateModifiedString;
     }
@@ -119,4 +116,13 @@ public class CredentialsElement implements Serializable {
         SimpleDateFormat DateFor = new SimpleDateFormat(dateFormat);
         this.dateModifiedString = DateFor.format(date);
     }
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
+    }
+
 }

@@ -35,7 +35,7 @@ public class StorageUI extends JFrame {
     private JTextField linkTextField;
     private JTextField dateCreatedTextField;
     private JTextField dateModifiedTextField;
-    private JComboBox accountTypeComboBox;
+    private JComboBox<String> accountTypeComboBox;
 
     public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
@@ -49,13 +49,17 @@ public class StorageUI extends JFrame {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dateCreatedTextField.setEditable(false);
         dateModifiedTextField.setEditable(false);
-        //accountTypeComboBox.add();
+        String[] accountTypeSelection = new String[]{"Education", "Entertainment", "Financial", "Health", "High Importance", "Sport", "Transport", "Utility", "Work", "None"};
+        for (String string : accountTypeSelection) {
+            accountTypeComboBox.addItem(string);
+        }
 
         list.addListSelectionListener(e -> {
             saveButton.setEnabled(true);
             deleteButton.setEnabled(true);
             if (!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
                 elementPanel.setVisible(true);
+                accountTypeComboBox.setSelectedIndex(dataOperations.getDataList().get(list.getSelectedIndex()).getAccountType());
                 domainTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDomain());
                 linkTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getLink());
                 usernameTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getUsername());
@@ -79,6 +83,7 @@ public class StorageUI extends JFrame {
             int index = list.getSelectedIndex();
             if (index >= 0) {
                 elementPanel.setVisible(false);
+                accountTypeComboBox.setSelectedIndex(9);
                 domainTextField.setText("");
                 usernameTextField.setText("");
                 emailTextField.setText("");
@@ -100,6 +105,7 @@ public class StorageUI extends JFrame {
 
         saveButton.setEnabled(false);
         saveButton.addActionListener(e -> {
+            dataOperations.getDataList().get(list.getSelectedIndex()).setAccountType(accountTypeComboBox.getSelectedIndex());
             dataOperations.getDataList().get(list.getSelectedIndex()).setDomain(domainTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setLink(linkTextField.getText());
             dataOperations.getDataList().get(list.getSelectedIndex()).setUsername(usernameTextField.getText());
@@ -146,7 +152,7 @@ public class StorageUI extends JFrame {
     }
 
     private void firstAppBoot() {
-        CredentialsElement firstElement = new CredentialsElement("Welcome!", "", "", "", "", "");
+        CredentialsElement firstElement = new CredentialsElement(9,"Welcome!", "", "", "", "", "");
         ArrayList<CredentialsElement> arrayList = new ArrayList<>();
         arrayList.add(firstElement);
         dataOperations.setDataList(arrayList);
