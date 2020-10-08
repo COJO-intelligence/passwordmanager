@@ -97,3 +97,7 @@ Check the repository for further updates.
 We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or on our git page.
 
 One project at a time... 
+
+### DONATE
+
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LK6BLUJBAJ97J
