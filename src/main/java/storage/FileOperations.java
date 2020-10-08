@@ -62,7 +62,7 @@ public class FileOperations {
      */
     public static void startUserDirectory() throws IOException {
         String homeDir = System.getProperty("user.home");
-        Path path = Paths.get(homeDir, "PMCojoFiles");
+        Path path = Paths.get(homeDir, "PMCojo");
         directoryPath = String.valueOf(path);
         File dir = new File(directoryPath);
         filePath = Paths.get(directoryPath, "pm.enc");
