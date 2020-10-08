@@ -3,50 +3,58 @@ package main.java.storage;
 import main.java.manager.KeyManager;
 
 import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 
 public class FileOperations {
 
-    private static final byte[] initialIV = new byte[]{
-            0x01, 0x02, 0x03, 0x04,
-            0x05, 0x06, 0x07, 0x08,
-            0x09, 0x0A, 0x0B, 0x0C,
-            0x0D, 0x0E, 0x0D, 0x0F
-    };
-
     public static String directoryPath;
     private static Path filePath = null;
 
-    private static byte[] decryptContent()
+    private byte[] decryptContent()
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         SecretKey secretKey = KeyManager.getSecretKey();
-        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
         byte[] encryptedContent = Files.readAllBytes(filePath);
-        return cipher.doFinal(encryptedContent);
+        AlgorithmParameterSpec gcmIv = new GCMParameterSpec(128, encryptedContent, 0, 12);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmIv);
+        return cipher.doFinal(encryptedContent, 12, encryptedContent.length - 12);
     }
 
-    private static void encryptContent(byte[] inputByteArray)
+    private void encryptContent(byte[] inputByteArray)
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, CertificateException, KeyStoreException, UnrecoverableEntryException {
         FileOutputStream fos = new FileOutputStream(String.valueOf(filePath));
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        byte[] iv = generateIV();
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
         if (!KeyManager.isSecretKeySet()) {
             KeyManager.setSecretKey();
         }
         SecretKey secretKey = KeyManager.getSecretKey();
-        IvParameterSpec ivSpec = new IvParameterSpec(initialIV);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-        fos.write(cipher.doFinal(inputByteArray));
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmParameterSpec);
+        byte [] encryptedData = cipher.doFinal(inputByteArray);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(iv.length + encryptedData.length);
+        byteBuffer.put(iv);
+        byteBuffer.put(encryptedData);
+        byte[] cipherMessage = byteBuffer.array();
+        fos.write(cipherMessage);
         fos.flush();
         fos.close();
+    }
+
+    private byte[] generateIV() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] iv = new byte[12];
+        secureRandom.nextBytes(iv);
+        return iv;
     }
 
     /**
