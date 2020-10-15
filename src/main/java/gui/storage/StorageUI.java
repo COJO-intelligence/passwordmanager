@@ -3,6 +3,7 @@ package main.java.gui.storage;
 import main.java.MainUI;
 import main.java.storage.CredentialsElement;
 import main.java.storage.DataOperations;
+import main.java.storage.PasswordGenerator;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -37,6 +38,7 @@ public class StorageUI extends JFrame {
     private JTextField dateModifiedTextField;
     private JComboBox<String> accountTypeComboBox;
     private JCheckBox deactivatedCheckBox;
+    private JButton generatePasswordButton;
 
     public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
@@ -123,6 +125,16 @@ public class StorageUI extends JFrame {
             dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
             writeListPanel();
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        generatePasswordButton.addActionListener(e -> {
+            PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
+                    .useDigits(true)
+                    .useLower(true)
+                    .useUpper(true)
+                    .usePunctuation(true)
+                    .build();
+            passwordTextField.setText(passwordGenerator.generate(16));
         });
 
         linkTextField.addMouseListener(new MouseAdapter() {
