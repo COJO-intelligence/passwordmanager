@@ -10,8 +10,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -110,20 +109,7 @@ public class StorageUI extends JFrame {
 
         saveButton.setEnabled(false);
         saveButton.addActionListener(e -> {
-            dataOperations.getDataList().get(list.getSelectedIndex()).setAccountType(accountTypeComboBox.getSelectedIndex());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setDomain(domainTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setLink(linkTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setUsername(usernameTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setEmail(emailTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setPassword(passwordTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setDateModifiedString();
-            dataOperations.getDataList().get(list.getSelectedIndex()).setAdditionalComments(additionalCommentsTextField.getText());
-            dataOperations.getDataList().get(list.getSelectedIndex()).setDeactivated(deactivatedCheckBox.isSelected());
-            if (!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
-                defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
-            }
-            dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
-            writeListPanel();
+            saveContent();
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         });
 
@@ -183,4 +169,21 @@ public class StorageUI extends JFrame {
         }
     }
 
+    private void saveContent()
+    {
+        dataOperations.getDataList().get(list.getSelectedIndex()).setAccountType(accountTypeComboBox.getSelectedIndex());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setDomain(domainTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setLink(linkTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setUsername(usernameTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setEmail(emailTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setPassword(passwordTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setDateModifiedString();
+        dataOperations.getDataList().get(list.getSelectedIndex()).setAdditionalComments(additionalCommentsTextField.getText());
+        dataOperations.getDataList().get(list.getSelectedIndex()).setDeactivated(deactivatedCheckBox.isSelected());
+        if (!domainTextField.getText().equals(defaultListModel.get(list.getSelectedIndex()))) {
+            defaultListModel.set(list.getSelectedIndex(), domainTextField.getText());
+        }
+        dateModifiedTextField.setText(dataOperations.getDataList().get(list.getSelectedIndex()).getDateModifiedString());
+        writeListPanel();
+    }
 }

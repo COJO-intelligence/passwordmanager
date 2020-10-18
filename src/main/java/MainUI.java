@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import main.java.gui.login.LoginUI;
 import main.java.gui.login.SetPassUI;
 import main.java.login.Login;
+import main.java.manager.TimerManager;
 import main.java.storage.FileOperations;
 
 import javax.swing.*;
@@ -45,6 +46,13 @@ public class MainUI {
 
     private static void startLoginFrame(JFrame frame) {
         LoginUI loginUI = new LoginUI();
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                new TimerManager(loginUI, frame);
+            }
+        });
         frame.setContentPane(loginUI.getMainPanel());
         frame.getRootPane().setDefaultButton(loginUI.getLoginButton());
     }

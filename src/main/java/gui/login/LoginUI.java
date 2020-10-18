@@ -25,6 +25,7 @@ public class LoginUI {
         loginButton.addActionListener(e -> {
             try {
                 Login login = new Login(passwordField.getPassword());
+                passwordField.setText("");
                 if (login.validateUserPassword()) {
                     changeContent();
                 } else {
