@@ -8,6 +8,32 @@ Implemented new features and improved previous build:
 * Inactivity for 15 minutes will lock the application;
 * Various security improvements (Key derivation function for the login, Main password type switch from String to CharArray, Changed encryption algorithm to AES in Galois Counter Mode to provide a form of protection against data tampering).
 
+1. *Key Derivation* + *SHA-512* with salts - used for storing passwords;
+    ```java
+   //Key Derivation
+   PBEKeySpec spec = new PBEKeySpec(password, SALT.getBytes(), 128, 1024);
+   emptyPasswordArray();
+   SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+   byte[] derivative = skf.generateSecret(spec).getEncoded();
+   spec.clearPassword();
+   
+   //Hash
+    MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+    String finalPassword = SALT + password + SALT;
+    return messageDigest.digest(finalPassword.getBytes());
+    ```
+
+1. *AES* in *GCM* Mode - used for authenticated data encryption;
+    ```java
+   Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+   byte[] iv = generateIV();
+   GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
+   SecretKey secretKey = KeyManager.getSecretKey();
+   cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmParameterSpec);
+   byte [] encryptedData = cipher.doFinal(inputByteArray);
+    ```
+
+
 **Warning!** Due to major modifications and additions in this version, files created with version 1.0.0 are not compatible with this version. Version 2.0.0 will have its files in a different directory, but on the same user's home path.
 
 ## Version 1.0.0
