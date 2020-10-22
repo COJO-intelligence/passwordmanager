@@ -6,7 +6,7 @@ Implemented new features and improved previous build:
 * New entries aiming to improve the quality of the stored information (Account Type, Date Created, Date Modified and "Deactivated?" checkbox);
 * New utility feature in the form of a random password generator;
 * Inactivity for 15 minutes will lock the application;
-* Various security improvements (Key derivation function for the login, Main password type switch from String to CharArray, Changed encryption algorithm to AES in Galois Counter Mode to provide a form of protection against data tampering).
+* Various security improvements (Key derivation function for the login, Main password type switch from String to CharArray, Changed encryption algorithm to AES in Galois Counter Mode to provide a form of protection against data tampering):
 
 1. *Key Derivation* + *SHA-512* with salts - used for storing passwords;
     ```java
@@ -114,6 +114,10 @@ Here is a list of the main algorithms and best practice logic used inside the ap
 Please report any issues by sending an email to cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or by opening a ticket on our git page to discuss what you would like to fix or to implement.
 We provide full access to the code, even for the GUI/GUX - there is nothing to hide.
 
+Also, if you want to support us financially you can do that by accessing the link below:
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T5VSHQCBRBAZC)
+
 ### Future Plans
 For short term, the plan is to further extend the password manager idea into a browser extension, or maybe a web application. For long term, we aim to provide a full cloud password manager solution, including coverage over mobile devices.
 
@@ -123,8 +127,3 @@ Check the repository for further updates.
 We are a small team of dedicated programmers and engineers which try to find our place into the world by building off-work, simple and user-friendly projects. For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or on our git page.
 
 One project at a time... 
-
-### DONATE
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T5VSHQCBRBAZC)
-

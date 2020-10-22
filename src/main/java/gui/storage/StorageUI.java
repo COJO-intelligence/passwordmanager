@@ -10,7 +10,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,6 +39,7 @@ public class StorageUI extends JFrame {
     private JComboBox<String> accountTypeComboBox;
     private JCheckBox deactivatedCheckBox;
     private JButton generatePasswordButton;
+    private JCheckBox generatePasswordCheckBox;
 
     public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
         if (dataOperations.isFilePresent()) {
@@ -113,6 +115,7 @@ public class StorageUI extends JFrame {
             JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(getMainPanel()), "Passwords saved!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         });
 
+        generatePasswordButton.setEnabled(false);
         generatePasswordButton.addActionListener(e -> {
             PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
                     .useDigits(true)
@@ -123,11 +126,13 @@ public class StorageUI extends JFrame {
             passwordTextField.setText(passwordGenerator.generate(16));
         });
 
+        generatePasswordCheckBox.setSelected(false);
+        generatePasswordCheckBox.addActionListener(e -> generatePasswordButton.setEnabled(generatePasswordCheckBox.isSelected()));
+
         linkTextField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (Desktop.isDesktopSupported())
-                {
+                if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop desktop = java.awt.Desktop.getDesktop();
                         URI uri = new URI(linkTextField.getText());
