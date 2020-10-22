@@ -13,6 +13,7 @@ import java.security.cert.CertificateException;
 import java.util.Scanner;
 
 public class KeyManager {
+
     private static final String algorithmEncrypt = "AES";
     private static final Path keyStorePath = Paths.get(FileOperations.directoryPath, "pm.p12");
     private static final String keyName = "MainKey";
@@ -53,7 +54,6 @@ public class KeyManager {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         char[] password = getHardwarePassword();
         if (!Files.isRegularFile(keyStorePath)) {
-            System.out.println("Nu exista keystore");
             return false;
         }
         keyStore.load(new FileInputStream(String.valueOf(keyStorePath)), password);
