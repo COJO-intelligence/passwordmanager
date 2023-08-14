@@ -1,4 +1,4 @@
-package main.java.storage;
+package storage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,11 +15,6 @@ public class DataOperations extends FileOperations implements Serializable {
         this.dataList = dataList;
     }
 
-    /**
-     * Adds a new CredentialsElement to the list.
-     *
-     * @param credentialsElement the inputs for the new element
-     */
     public void addNewElement(CredentialsElement credentialsElement) {
         dataList.add(credentialsElement);
     }

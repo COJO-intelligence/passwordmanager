@@ -1,9 +1,9 @@
-package main.java.gui.storage;
+package gui.storage;
 
-import main.java.MainUI;
-import main.java.storage.CredentialsElement;
-import main.java.storage.DataOperations;
-import main.java.storage.PasswordGenerator;
+import launcher.MainUI;
+import storage.CredentialsElement;
+import storage.DataOperations;
+import storage.PasswordGenerator;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -17,7 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
+import java.security.spec.InvalidKeySpecException;
 
 public class StorageUI extends JFrame {
     final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
@@ -41,12 +41,9 @@ public class StorageUI extends JFrame {
     private JButton generatePasswordButton;
     private JCheckBox generatePasswordCheckBox;
 
-    public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException {
-        if (dataOperations.isFilePresent()) {
-            loadListPanel();
-        } else {
-            firstAppBoot();
-        }
+    public StorageUI() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, KeyStoreException, IllegalBlockSizeException, ClassNotFoundException, InvalidKeySpecException, KeyManagementException {
+
+        loadListPanel();
         elementPanel.setVisible(false);
 
         list.setModel(defaultListModel);
@@ -154,20 +151,11 @@ public class StorageUI extends JFrame {
         try {
             dataOperations.writeAllElementsIntoFile(dataOperations.getDataList());
         } catch (Exception exception) {
-            MainUI.treatError(exception, (JFrame) SwingUtilities.getWindowAncestor(mainPanel), 2);
+            MainUI.treatError((JFrame) SwingUtilities.getWindowAncestor(mainPanel), 2);
         }
     }
 
-    private void firstAppBoot() {
-        CredentialsElement firstElement = new CredentialsElement(9,"Welcome!", "", "", "", "", "");
-        ArrayList<CredentialsElement> arrayList = new ArrayList<>();
-        arrayList.add(firstElement);
-        dataOperations.setDataList(arrayList);
-        writeListPanel();
-        defaultListModel.addElement(dataOperations.getDataList().get(0).getDomain());
-    }
-
-    private void loadListPanel() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KeyStoreException, ClassNotFoundException {
+    private void loadListPanel() throws IOException, CertificateException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, KeyStoreException, ClassNotFoundException, InvalidKeySpecException, KeyManagementException {
         dataOperations.setDataList(dataOperations.loadAllElementsIntoArrayList());
         for (CredentialsElement credentialsElement : dataOperations.getDataList()) {
             defaultListModel.addElement(credentialsElement.getDomain());

@@ -1,4 +1,4 @@
-package main.java.storage;
+package storage;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -62,8 +62,8 @@ public class PasswordGenerator {
     }
 
     public String generate(int length) {
-        if (length < 4) {
-            length = 4;
+        if (length < 8) {
+            length = 8;
         } else {
             if (length > 30) {
                 length = 30;
@@ -71,7 +71,7 @@ public class PasswordGenerator {
         }
         StringBuilder password = new StringBuilder(length);
         SecureRandom secureRandom = new SecureRandom();
-        List<String> charCategories = new ArrayList<>(4);
+        List<String> charCategories = new ArrayList<>(8);
         if (useLower) {
             charCategories.add(LOWER);
         }

@@ -1,6 +1,6 @@
-package main.java.manager;
+package manager;
 
-import main.java.gui.login.LoginUI;
+import launcher.StartUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +13,11 @@ public class TimerManager implements ActionListener {
     private static final int SESSION_TIMEOUT = 15 * 60 * 1000;
     private final Timer invalidationTimer = new Timer(SESSION_TIMEOUT, this);
 
-    LoginUI loginUI;
+    StartUI startUI;
     JFrame frame;
 
-    public TimerManager(LoginUI mainLogin, JFrame jFrame) {
-
-        loginUI = mainLogin;
+    public TimerManager(StartUI mainLogin, JFrame jFrame) {
+        startUI = mainLogin;
         frame = jFrame;
         invalidationTimer.setRepeats(false);
         invalidationTimer.restart();
@@ -29,8 +28,8 @@ public class TimerManager implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.setContentPane(loginUI.getMainPanel());
-        frame.getRootPane().setDefaultButton(loginUI.getLoginButton());
+        frame.setContentPane(startUI.getStartPanel());
+        //frame.getRootPane().setDefaultButton(startUI.getLoginButton());
         frame.revalidate();
         invalidationTimer.restart();
     }
