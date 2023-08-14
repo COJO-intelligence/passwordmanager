@@ -114,4 +114,5 @@ Here is a list of the main algorithms and best practice logic used inside the ap
 For any observations, comments, proposals, ideas or just some random thoughts please contact us at cojo.intelligence@gmail.com, on our Discord Server (https://discord.gg/cS7wBKu) or by opening a ticket on our git page. We provide full access to the code, even for the GUI/GUX - there is nothing to hide.
 
 Also, if you want to support us financially you can do that by accessing the link below:
+
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T5VSHQCBRBAZC)
